@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" class="h-100">
+  
+    <?php require $_SERVER['DOCUMENT_ROOT'] . "/resources/head.php"; ?>
+
+	<body class="d-flex h-100 text-white bg-dark">
+    
+		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+			
+		<h1 id="path-to-user">Path to User</h1><br>
+			<h2 id="network-scan">Network scan</h2><br>
+			
+				<p> I scanned the network with nmap on target IP. This machine has very few open ports since it has port 22 and port 80.</p>
+				<div class="figure">
+					<img src="/assets/writeups_img/openadmin/nmap.PNG" />
+				</div><br>
+
+				<p>The web page has a login form but I didn't find anything useful, so I started enumerating directories.</p><br>	
+	
+			<h2 id="directory-enumeration">Directory enumeration</h2>			
+				<p>I ran dirbuster from the GUI looking for some interesting directory</p>
+				<div class="figure">
+					<img src="/assets/writeups_img/openadmin/dirb.PNG" />
+				</div><br>
+
+				<p>There were many directories but traveling through them on browser led nowhere, except for a single directory named &quot;ona&quot;. This is a home page for OpenNetAdmin service.</p>
+				<div class="figure">
+					<img src="/assets/writeups_img/openadmin/ona_page.PNG" />
+				</div><br>
+
+				<p>The most interesting part is that this version is <strong>not</strong> updated. This was proven to be my initial foothold, so I started navigating the web in search of exploits.</p>
+			
+			<h2 id="ona-exploitation">ONA exploitation</h2>
+				<p><a href="https://www.exploit-db.com/exploits/47691">This</a> was the exploit I was looking for, just running this script passing the target URL as argument did the trick, I got a shell on my terminal, but I couldn't traverse the directory. So I began listing every folder in order to find something. I spent a lot of time doing this because I couldn't use cd or other commands, however I was able to list two users: (jimmy and joanna) and cat file contents on the terminal. Since there were many configuration files I started analyzing each of them.</p>
+				<div class="figure">
+					<img src="/assets/writeups_img/openadmin/php_conf.PNG" />
+				</div><br>
+
+				<p>This file might have some credentials so I cat its content and this was what I found:</p>
+				<div class="figure">
+					<img src="/assets/writeups_img/openadmin/db_conf.PNG" />
+				</div><br>
+
+				<p>Not bad! A database password. I tried to use it somewhere but I couldn't find a database, so I tried to log from the shell using <em>su</em> command but I had no luck. I did manage to log in using the SSH service. The correct user was jimmy, from here I cat the user flag. Then was time to escalate to root.</p>
+
+			<hr>
+			<h1 id="path-to-root">Path to Root</h1>
+				<h2 id="privilege-escalation">Privilege escalation</h2>
+					<p>This part was quite tricky but not very hard. I basically continued my enumeration following <a href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/">this guide</a> (I suggest to always have the guide at hand especially if you are a beginner). I started listing all processes running on the machine with netstat: there is an unusual process running on port 52846</p>
+					<div class="figure">
+						<img src="/assets/writeups_img/openadmin/process.PNG" />
+					</div><br>
+	
+					<p>I listed all files owned by jimmy using <em>find</em> command, there were <strong>a lot</strong> of files but, in the end, there was a non-default directory called <em>internal</em> with three .php files inside.</p>
+					<div class="figure">
+						<img src="/assets/writeups_img/openadmin/main_php.PNG" />
+					</div><br>
+
+					<p><strong>(on the background you can admire a stunning draft version of this write-up)</strong></p>
+					<p>By the way, this file is extremely useful because it prints the RSA key for the user joanna, still, I had to find a way to call the process, maybe it was running on the same port we saw before.</p>
+					<p>I tried <em>curl</em>ing the same machine on that port, bingo!</p>
+					<pre><code>curl localhost:52486/main.php</code></pre>
+					
+					<p>This command will print the RSA key for joanna. Then I cracked the key using ssh2john, returning me a hash.</p>
+					<div class="figure">
+						<img src="/assets/writeups_img/openadmin/john.PNG" />
+					</div><br>
+
+					<p>Then I used John the Ripper to crack the resulting hash and get a plain-text password. As you can see, using rockyou as wordlist gave me the password &quot;bloodninjas&quot;.</p>
+					<p>The last part of this machine is to use this passphrase in order to login on SSH with the user joanna.</p>
+					
+					<div class="figure">
+						<img src="/assets/writeups_img/openadmin/ssh_joanna.PNG" />
+					</div><br>
+					
+					<p>Enumerating with joanna's account revealed that she can use the executable /bin/nano on /opt/priv using root privileges. Running nano on that file and pressing CTRL+R and CTRL+X we can enter in command execution mode, now <strong>we can run any command with root privileges</strong>! Just cat the content on the root.txt in /root directory and job is done.</p>
+					
+					<div class="figure">
+						<img src="/assets/writeups_img/openadmin/root.PNG" />
+					</div><br>
+		</div>
+		
+	</body>
+</html>
