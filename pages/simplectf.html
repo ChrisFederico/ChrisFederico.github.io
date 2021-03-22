@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<title>Chris Federico · Homepage</title>
+
+		<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
+
+		<!-- Bootstrap core CSS -->
+		<link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+		<!-- Favicons -->
+		<link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+		<link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
+		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
+		<meta name="theme-color" content="#7952b3">
+
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		<!-- Custom styles for this template -->
+		<link href="../css/cover.css" rel="stylesheet">
+	</head>
+	<body class="d-flex h-100 text-center text-white bg-dark">
+		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+			<header class="mb-auto">
+				<div>
+					<h3 class="float-md-start mb-0"></h3>
+					<nav class="nav nav-masthead justify-content-center float-md-end">
+						<a class="nav-link active text-white" aria-current="page" href="../index.html">Home</a>
+						<a class="nav-link text-white" href="../writeups.html">Write-Ups</a>
+					</nav>
+				</div>
+			</header>
+			<hr>
+			<main class="px-3">
+
+				<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+					<h1>Path to User</h1><br>
+                    <h2>Network scan</h2><br>
+                    <p>As always I started using <b>nmap</b> in order to find open ports and services:</p>
+                    <div class="figure">
+                        <img src="/assets/writeups_img/simplectf/nmap.PNG">
+                    </div><br>
+                    
+                    <p>There's the SSH service on <b>port 2222</b>, FTP on 21 and an Apache webserver on port 80.<br>
+                        I tried to find some hint using ftp, since it allowed anonymous login, but I didn't find anything useful; same thing
+                        for the webserver since it only had the standard Apache landing page.
+                    </p><br>
+
+                    <p>The next step was looking for directories into the webserver, so I used a tool called <a href="https://github.com/maurosoria/dirsearch">dirsearch</a>. I prefer
+                        this rather than gobuster or dir, also because none of them managed to find anything. Anyway...this was the output of the
+                        command, I noticed that there was a directory called <b>simple</b>, which led me to a <b>CMS Made Simple</b> page.
+                    </p><br>
+                    
+                    <div class="figure">
+                        <img src="/assets/writeups_img/simplectf/dirsearch.PNG">
+                    </div><br>
+                    <div class="figure">
+                        <img src="/assets/writeups_img/simplectf/cmssimple.PNG" width="60%">
+                    </div><br>
+
+                    <p>This had to be the initial foothold somehow, so I dig into the website looking for useful informations; the first
+                        thing was to determine the version of the CMS, so I looked into the source code and I found that it was obsolete!
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/simplectf/version.PNG">
+                    </div><br>
+
+                    <p>I was pretty sure this version was still vulnerable so I searched for common exploits with <b>searchsploit</b>. I found
+                        a Python script which exploited a vulnerability to SQL Injections. <a href="https://www.exploit-db.com/exploits/46635">This</a>
+                        was the exploit I used and <a href="https://nvd.nist.gov/vuln/detail/CVE-2019-9053">this</a> is the CVE reference I found. You
+                        can see the exploits is based on Time-based SQL Injections.
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/simplectf/searchsploit.PNG">
+                    </div><br>
+
+                    <strong><b>NOTE</b>: I'm always hesitant while solving CTFs based on CVE without knowing what kind of vulnerability I'm exploiting
+                        and how the exploit actually works. I will provide a more detailed explanation about how the attack worked as soon as possible.  
+                    </strong><br>
+
+                    <p>Back to business...This was the output of the exploit (I hope you have better luck than me with python settings, since I had to make
+                        this thing work with python3...But long-story-short: if you have trouble while you are trying to run this exploit with python command,
+                        I used <a href="https://docs.python.org/3/library/2to3.html">this tool</a> in order to convert it to python3 and somehow it worked).
+                        The tool managed to find username and passwords! So I ran the command using <a href="https://github.com/danielmiessler/SecLists/blob/master/Passwords/Common-Credentials/10k-most-common.txt">this wordlist</a>.<br>
+                        <code sourceCode="python">
+                            python3 46635.py -u x.x.x.x/simple/ --crack -w worst110.txt                              
+                        </code><br>
+                        <b>(Obviously replace x.x.x.x with the ip address of your virtual instance)</b><br> 
+                        ...Aaand here's the output:
+                    </p>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/simplectf/crackpassword.PNG">
+                    </div><br>
+		
+                    <p>From this point I could login with mitch's credentials on SSH and get a user shell. The command is:
+                        <code>ssh mitch@x.x.x.x -p 2222</code> (always remember to replace the ip, <b>and to specify the port with the -p option</b>, 
+                        since is running on a different port from standard)
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/simplectf/ssh.PNG">
+                    </div><br>
+
+                    <p>Just cat the content of user.txt in order to get the user flag!</p><br>
+
+                    <hr>
+                    <h1>Path to root</h1><br>
+                    <h2>Privesc</h2><br>
+                    <p>The root part was much more easier but you have to know how to enumerate on a local machine. So always have at hand
+                        a cheatsheet if you forget some commands. After a while I ran <code>sudo -l</code> in order to list what mitch
+                        can do with root privileges: turned out that <b>vim</b> was executable without using password.
+                    </p><br>
+
+                    <p>Another tool I had was <a href="https://gtfobins.github.io/">GTFOBins</a>. Here you can find all sorts of
+                        permissions exploits. In my case, the command I had to run was:
+                        <code>sudo vim -c ':!/bin/bash'</code><br>
+                        This command spawns a root shell during startup, before opening the editor (check <a href="https://renenyffenegger.ch/notes/development/vim/editing/start-up/command-line-options">here</a> for details).                  
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/simplectf/root.PNG">
+                    </div><br>
+
+                    <h2>Questions</h2><br>
+                    <p>So here we are with the questions and answers from the tryhackme challenge:</p><br>
+                    
+                    <p>
+                        <b>How many services are running under port 1000?</b> 2 (it's referring to service running on port numbers that are &lt; 1000)<br>
+                    </p>
+                    <p>
+                        <b>What is running on the higher port?</b> ssh (the service is running on the highest port number)<br>
+                    </p>
+                    <p>
+                        <b>What's the CVE you're using against the application?</b> CVE-2019-9053<br>
+                    </p>
+                    <p>
+                        <b>To what kind of vulnerability is the application vulnerable?</b> sqli (short for SQL Injection)<br>
+                    </p>
+                    <p>
+                        <b>What's the password?</b> secret<br>
+                    </p>
+                    <p>
+                        <b>Where can you login with the details obtained?</b> ssh<br>
+                    </p>
+                    <p>
+                        <b>What's the user flag?</b> *Just cat it once you log with user credentials*<br>
+                    </p>
+                    <p>
+                        <b>Is there any other user in the home directory? What's its name?</b> sunbath (navigate using <em>cd</em> and listing files with <em>ls</em>)
+                    </p>
+                    <p>
+                        <b>What can you leverage to spawn a privileged shell?</b> vim<br>
+                    </p>
+                    <p>
+                        <b>What's the root flag?</b> Cat it once you're root
+                    </p>
+                
+                </div>
+			</main>
+			<hr>
+			<footer class="mt-auto text-white-50">
+				<p>Developed by <a href="https://github.com/ChrisFederico" class="text-white">Chris Federico</a></p>
+			</footer>	
+		</div>	
+	</body>
+</html>
