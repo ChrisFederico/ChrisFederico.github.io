@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<title>Chris Federico · Homepage</title>
+
+		<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
+
+		<!-- Bootstrap core CSS -->
+		<link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+		<!-- Favicons -->
+		<link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+		<link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
+		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
+		<meta name="theme-color" content="#7952b3">
+
+		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+		<!-- Custom styles for this template -->
+		<link href="../css/cover.css" rel="stylesheet">
+	</head>
+	<body class="d-flex h-100 text-center text-white bg-dark">
+		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+			<header class="mb-auto">
+				<div>
+					<h3 class="float-md-start mb-0"></h3>
+					<nav class="nav nav-masthead justify-content-center float-md-end">
+						<a class="nav-link active text-white" aria-current="page" href="../index.html">Home</a>
+						<a class="nav-link text-white" href="../writeups.html">Write-Ups</a>
+					</nav>
+				</div>
+			</header>
+			<hr>
+			<main class="px-3">
+
+				<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+
+					<h1>Path to User</h1><br>
+                    <h2>Network scan</h2><br>
+                    <p>I began scanning the network:</p>
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/nmap.PNG">
+                    </div><br>
+                    
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/2gobuster.PNG">
+                    </div><br>
+
+                    <p>There were the SSH service on <b>port 22</b> and an Apache webserver on port 80.<br>
+                        Since port 80 was open I tried to enumerate some directories using <b>gobuster</b> and I found the
+                        admin panel on /admin path.
+                    </p><br>
+                    
+                    <p>The admin panel had a simple form with username and password. First thing I tried was entering some <b>default
+                        credentials</b> like "admin:admin", "administrator:administrator" and some weak passwords like "overpass" etc.
+                        Then I tried different kinds of attack like <b>SQL Injections</b> or <b>XSS scripting</b> but none of them had success. 
+                    </p><br>
+
+                    <p>I had a look in Firefox dev tools in order to understand the behavior of the website when I entered the credentials.
+                        I was lucky enough to spot a <b>login.js</b> file which was located in the webserver's root directory. 
+                    </p><br>
+                    
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/3loginadmin.PNG" width="60%">
+                    </div><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/4login_js.PNG" width="60%">
+                    </div><br>
+
+                    <p>By opening the login.js file I found a piece of source code for the login page. I had no doubts this was the
+                        initial foothold I needed.
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/5login_js_src.PNG">
+                    </div><br>
+
+                    <p>I highlighted the piece of code I had to hack: in order to get to the /admin location I had to set a cookie
+                        on my browser. The steps I followed were the following:<br>
+                        - setup <b>Burp Suite</b><br>
+                        - intercept a response from the webserver<br>
+                        - set a session cookie for this website<br>
+                        - <b>exploit!</b><br> 
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/6burp1.PNG"><br>
+                        <small><i>The request from my browser</i></small>
+                    </div><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/6burp2.PNG"><br>
+                        <small><i>The server response</i></small>
+                    </div><br>
+
+                    <p>The trick was to set a <i>location</i> parameter to <b>/admin</b> and cancel the "Incorrect Credentials" from
+                        the intercepted response. This way I had a cookie in my session on the website, this should have allowed me
+                        to bypass the <b>if statement</b> on the login.js function.
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/7cookie1.PNG">
+                        <img class="ml-1" src="/assets/writeups_img/overpass/7cookie2.PNG">
+                    </div><br>
+
+                    <p>Now, as you can see in the picture, I had a cookie in my session and as I <b>reloaded the page</b> I entered in the admin panel!
+                        The login function in the js file received the sessionToken and the the server ran the code in the <b>else statement</b>,
+                        so my new location was the /admin directory.  
+                    </p><br>
+                    
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/8id_rsa.PNG">
+                    </div><br>
+
+                    <p>In this page there was an <b>RSA key</b>! This was crucial during the walkthrough as it was associated to a username
+                        called <b>james</b>. The next step was to decode the key to get a hashed string, then I had to bruteforce the hashed
+                        string in order to get the passphrase to use with the RSA key, and get a shell with SSH.
+                    </p><br>
+
+                    <p>I first copied the key on a local file and then searched for a couple of tools in order to get the job done,
+                        the first one was <a href="https://github.com/openwall/john/blob/bleeding-jumbo/run/ssh2john.py">ssh2john</a>: a python script
+                        which reads a private key file and returns a hash string. The second was <a href="https://tools.kali.org/password-attacks/john">John The Ripper</a>,
+                        which is pre-installed in Kali.     
+                    </p><br>
+
+                    <p>The first command was<br>
+                    <code>./ssh2john.py id_rsa > id_rsa.crack</code><br>
+                        Which returned the hash to crack. This hash was the input for the following command:<br>
+                    <code>john id_rsa.crack -w=/usr/share/wordlists/rockyou.txt</code><br>
+                    And as I expected I got a passphrase <i>james13</i><br>
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/9crack_idrsa.PNG">
+                    </div><br>
+
+                    <p>All I had to do was to login with SSH using the RSA key using this pass.
+                    After I got the shell, the user flag was in the /home/james/ directory.
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/10usershell.PNG">
+                    </div><br>
+
+                    <p>The user flag was right into the home folder for james.
+                    </p><br>
+
+                    <hr>
+                    <h1>Path to root</h1><br>
+                    <h2>Privesc</h2><br>
+                    <p>I did some manual enumeration looking for misconfigurations, permissions, etc.<br>
+                        I found the vulnerability while listing cronjobs: I noticed a cron running every minute calling a 
+                        buildscript.sh file on overpass.thm/downloads/src/ folder; also, the cron was running as root. 
+                        This had to be the vulnerability, all I had to do was redirect the target of the cronjob on a malicious script.
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/11crontab.PNG">
+                    </div><br>
+
+                    <p>I searched on /etc/hosts file in order to rename the overpass.thm domain and redirect it towards my ip
+                        (for the tun0 interface), then I cancelled all the entries for the ipv4 rules and added a single rule
+                        that associated my ip to overpass.thm domain. 
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/12hosts.PNG"><br>
+                        <small><i>Just leave a single rule for x.x.x.x overpass.thm (where x.x.x.x is your THM VPN IP)</i></small>
+                    </div><br>
+
+                    <p>The last thing I had to do was make sure that the curl command in the cronjob was actually working. This was
+                        pointing to a specific folder, so I had to replicate the exact same path on a local webserver. I tried
+                        using<br>
+                        <code>php -S localhost:80</code><br>
+                        But for some reason it wasn't working as in the log I didn't receive any request from the cron (maybe it wasn't properly an HTTP server), 
+                        so I switched to a Python simple HTTP server:<br>
+                        <code>sudo python3 -m http.server 80</code>    
+                    </p><br>
+
+                    <p>Also I had to craft the malicious script in order to get the root access; I wrote a simple bash script that
+                        copied /bin/bash executable into /tmp folder and gave SUID permissions (so I could run it as root). Obviously
+                        the script had to be called as the name specified in the cronjob, so this was my <i>buildscript.sh</i>.                        
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/13exploiting_cron2.PNG">
+                    </div><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/13exploiting_cron1.PNG">
+                    </div><br>
+
+                    <p>As expected after less than a minute the cronjob started and sent a request on my HTTP server at the /downloads/src/buildscript.sh
+                        path, but this time it executed <b>my</b> malicious script and as I checked on my user SSH shell, listing the /tmp folder I found
+                        my malicious executable.                         
+                    </p><br>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/13exploiting_cron3.PNG">
+                    </div><br>
+
+                    <p>So the last thing to do was to run the script using:<br>
+                    <code>/tmp/rootbash -p</code><br>
+                    This granted me root access and I got the root flag from /root folder.
+                    </p>
+
+                    <div class="figure">
+                        <img src="/assets/writeups_img/overpass/14rootshell.PNG">
+                    </div><br>
+                
+                </div>
+			</main>
+			<hr>
+			<footer class="mt-auto text-white-50">
+				<p>Developed by <a href="https://github.com/ChrisFederico" class="text-white">Chris Federico</a></p>
+			</footer>	
+		</div>	
+	</body>
+</html>
