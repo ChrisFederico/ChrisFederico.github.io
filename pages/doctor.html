@@ -1,49 +1,89 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" class="h-100">
 
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
-		<title>Chris Federico · Homepage</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <title>Chris Federico · Homepage</title>
 
-		<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
+  <!-- Add your CSS styling here -->
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #222;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
 
-		<!-- Bootstrap core CSS -->
-		<link href="../css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    /* Header styling */
+    header {
+      background-color: #333;
+      padding: 1rem;
+    }
 
-		<!-- Favicons -->
-		<link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-		<link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
-		<meta name="theme-color" content="#7952b3">
+    .nav-link {
+      color: #fff;
+      margin: 0 1rem;
+      text-decoration: none;
+    }
 
-		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    /* Main content styling */
+    main {
+      padding: 2rem;
+    }
 
-		<!-- Custom styles for this template -->
-		<link href="../css/cover.css" rel="stylesheet">
-	</head>
-	<body class="d-flex h-100 text-center text-white bg-dark">
-		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-			<header class="mb-auto">
-				<div>
-					<h3 class="float-md-start mb-0"></h3>
-					<nav class="nav nav-masthead justify-content-center float-md-end">
-						<a class="nav-link active text-white" aria-current="page" href="../index.html">Home</a>
-						<a class="nav-link text-white" href="../writeups.html">Write-Ups</a>
-					</nav>
-				</div>
-			</header>
-			<hr>
-			<main class="px-3">
+    h1, h2 {
+      color: #ff9800;
+    }
 
-				<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    p {
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
 
-					<h1 id="user-access">User access</h1><br>	
+    .figure {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Footer styling */
+    footer {
+      background-color: #333;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    footer a {
+      color: #ff9800;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body class="d-flex h-100 text-center text-white bg-dark">
+  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+    <header class="mb-auto">
+      <div>
+        <h3 class="float-md-start mb-0"></h3>
+        <nav class="nav nav-masthead justify-content-center float-md-end">
+          <a class="nav-link active" aria-current="page" href="../index.html">Home</a>
+          <a class="nav-link" href="../writeups.html">Write-Ups</a>
+        </nav>
+      </div>
+    </header>
+    <hr>
+    <main class="px-3">
+
+      <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
+        <!-- Rest of your content -->
+        <h1 id="user-access">User access</h1><br>	
 						<h2 id="scan">Scan</h2>
 							<p>As always I started by running nmap on the target IP in search of open ports</p>
 							<div class="figure">
@@ -151,13 +191,13 @@
 						<div class="figure">
 							<img src="/assets/writeups_img/doctor/root_shell2.PNG" />
 						</div>
-		
-				</div>
-			</main>
-			<hr>
-			<footer class="mt-auto text-white-50">
-				<p>Developed by <a href="https://github.com/ChrisFederico" class="text-white">Chris Federico</a></p>
-			</footer>	
-		</div>	
-	</body>
+      </div>
+    </main>
+    <hr>
+    <footer class="mt-auto">
+      <p>Developed by <a href="https://github.com/ChrisFederico" class="text-white">Chris Federico</a></p>
+    </footer>
+  </div>
+</body>
+
 </html>
