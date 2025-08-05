@@ -1,81 +1,363 @@
-<!doctype html>
-<html lang="en" class="h-100">
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
 
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content="">
-		<title>Chris Federico · Homepage</title>
+<head>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
+		rel="stylesheet">
 
-		<link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/cover/">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Chris Federico</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<style>
+		/* Palette arancione */
+		:root {
+			--bg: #1c1c1c;
+			--text: #f0f0f0;
+			--primary: #ff6b00;
+			--primary-light: #ffa347;
+			--gray-dark: #2c2c2c;
+		}
 
-		<!-- Bootstrap core CSS -->
-		<link href="css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			font-family: 'Poppins', sans-serif;
+			background: linear-gradient(270deg, #1c1c1c, #2c2c2c, #3a3a3a, #2c2c2c, #1c1c1c);
+			background-size: 800% 800%;
+			animation: gradientShift 30s ease infinite;
+			color: var(--text);
+			display: flex;
+			flex-direction: column;
+			transition: background-color 0.5s ease, color 0.5s ease;
+		}
 
-		<!-- Favicons -->
-		<link rel="apple-touch-icon" href="/docs/5.0/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
-		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
-		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-		<link rel="mask-icon" href="/docs/5.0/assets/img/favicons/safari-pinned-tab.svg" color="#7952b3">
-		<link rel="icon" href="/docs/5.0/assets/img/favicons/favicon.ico">
-		<meta name="theme-color" content="#7952b3">
+		@keyframes gradientShift {
+			0% {
+				background-position: 0% 50%;
+			}
+			50% {
+				background-position: 100% 50%;
+			}
+			100% {
+				background-position: 0% 50%;
+			}
+		}
 
-		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		header {
+			padding: 1rem 2rem;
+			background-color: var(--gray-dark);
+			border-bottom: 1px solid #444;
+		}
 
-		<!-- Custom styles for this template -->
-		<link href="css/cover.css" rel="stylesheet">
-	</head>
-	<body class="d-flex h-100 text-center text-white bg-dark">
-		<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-			<header class="mb-auto">
-				<div>
-					<h3 class="float-md-start mb-0"></h3>
-					<nav class="nav nav-masthead justify-content-center float-md-end">
-						<a class="nav-link active text-white" aria-current="page" href="index.html">Home</a>
-						<a class="nav-link text-white" href="writeups.html">Write-Ups</a>
-					</nav>
-				</div>
-			</header>
-			<hr>
-			<main class="px-3">
+		main {
+			flex: 1;
+			padding: 2rem;
+		}
 
-			<h1 class="mt-5">Chris Federico</h1>
+		footer {
+			text-align: center;
+			padding: 1rem;
+			background-color: var(--gray-dark);
+			border-top: 1px solid #444;
+		}
 
-			<p class="lead">Born in Naples in 1992, I am a software developer, cybersecurity and guitar enthusiast.</p>
+		/* Headings */
+		h1,
+		h2,
+		h3 {
+			font-weight: 600;
+		}
 
-			<p class="lead">
-				<div class="row justify-content-center">
-					<div class="col-md-1 mt-3">
-						<a href="https://www.instagram.com/_chrisfederico/" class="text-white">
-							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-instagram" viewBox="0 0 16 16">
-								<path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"/>
-							</svg>
-						</a>    
-					</div>
-					<div class="col-md-1 mt-3">
-						<a href="https://www.linkedin.com/in/cristiano-federico-821b12139/" class="text-white">
-							<svg href="#" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-linkedin" viewBox="0 0 16 16">
-								<path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
-							</svg>
-						</a>                        
-					</div>
+		/* Titoli importanti */
+		h1 {
+			font-size: 2.5rem;
+		}
 
-					<div class="col-md-1 mt-3">
-						<a href="https://github.com/ChrisFederico" class="text-white">
-							<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-github" viewBox="0 0 16 16">
-								<path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
-							</svg>
-						</a>                        
-					</div>				
-				</div>
-			</p>
-			</main>
-			<hr>
-			<footer class="mt-auto text-white-50">
-				<p>Developed by <a href="https://github.com/ChrisFederico" class="text-white">Chris Federico</a></p>
-			</footer>	
-		</div>	
-	</body>
+		h2 {
+			font-size: 2rem;
+		}
+
+		h3 {
+			font-size: 1.5rem;
+		}
+
+		/* Sottotitoli o descrizioni */
+		.lead,
+		.subtitle,
+		.section-subtitle {
+			font-weight: 300;
+			font-size: 1.125rem;
+			color: #cccccc;
+		}
+
+		/* Paragrafi normali */
+		p {
+			font-weight: 400;
+			line-height: 1.6;
+		}
+
+		/* Footer, note o testo secondario */
+		footer,
+		.small-text {
+			font-weight: 300;
+			font-size: 0.9rem;
+			color: #999999;
+		}
+
+		/* Navbar */
+		.nav-link {
+			transition: color 0.3s ease, transform 0.3s ease;
+			color: var(--text);
+			cursor: pointer;
+		}
+
+		.nav-link:hover {
+			color: var(--primary-light);
+			transform: scale(1.05);
+		}
+
+		.nav-link.active {
+			font-weight: bold;
+			text-decoration: underline;
+			color: var(--primary) !important;
+			position: relative;
+		}
+
+		.nav-link.active::after {
+			content: "";
+			position: absolute;
+			left: 50%;
+			bottom: -5px;
+			width: 6px;
+			height: 6px;
+			background-color: var(--primary);
+			border-radius: 50%;
+			transform: translateX(-50%);
+			animation: pulse 1.5s infinite;
+		}
+
+		@keyframes pulse {
+			0% {
+				transform: translateX(-50%) scale(1);
+				opacity: 1;
+			}
+
+			50% {
+				transform: translateX(-50%) scale(1.5);
+				opacity: 0.5;
+			}
+
+			100% {
+				transform: translateX(-50%) scale(1);
+				opacity: 1;
+			}
+		}
+
+		.profile-pic {
+			max-width: 200px;
+			border-radius: 50%;
+			border: 2px solid var(--primary);
+			transition: transform 0.3s ease;
+		}
+
+		.profile-pic:hover {
+			transform: scale(1.05);
+		}
+
+		/* Social icons */
+		.social-icons a {
+			transition: transform 0.3s ease, color 0.3s ease;
+			color: var(--text);
+		}
+
+		.social-icons a:hover {
+			transform: scale(1.3);
+			color: var(--primary-light);
+		}
+
+		/* Fade-in animation */
+		.fade-in {
+			opacity: 0;
+			animation: fadeIn 0.8s ease forwards;
+		}
+
+		@keyframes fadeIn {
+			to {
+				opacity: 1;
+			}
+		}
+
+		/* Animazione entrata: fade + slide */
+		.fade-in-up {
+			opacity: 0;
+			transform: translateY(20px);
+			animation: fadeInUp 0.8s ease forwards;
+		}
+
+		@keyframes fadeInUp {
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* Ritardi per elementi multipli (es. titoli, paragrafi) */
+		.fade-delay-1 {
+			animation-delay: 0.1s;
+		}
+
+		.fade-delay-2 {
+			animation-delay: 0.2s;
+		}
+
+		.fade-delay-3 {
+			animation-delay: 0.3s;
+		}
+
+		/* Curriculum Section Styling */
+
+		/* Titoli principali */
+		h1 {
+			font-weight: 700;
+			font-size: 2.2rem;
+			margin-bottom: 1.5rem;
+		}
+
+		h2 {
+			font-weight: 600;
+			font-size: 1.6rem;
+			margin-bottom: 0.3rem;
+		}
+
+		h5 {
+			font-weight: 600;
+			font-size: 1.1rem;
+			margin-top: 1rem;
+			margin-bottom: 0.5rem;
+		}
+
+		/* Azienda + Location */
+		.lead {
+			font-weight: 200;
+			font-size: 1.05rem;
+			color: #bbbbbb;
+			margin-bottom: 0.2rem;
+		}
+
+		/* Date */
+		.small-text {
+			font-weight: 200;
+			font-size: 0.95rem;
+			color: #999999;
+			margin-bottom: 1rem;
+		}
+
+		/* Elenco progetti */
+		ul {
+			padding-left: 1.2rem;
+			margin-bottom: 2rem;
+		}
+
+		ul li {
+			font-weight: 200;
+			font-size: 1rem;
+			line-height: 1.6;
+			margin-bottom: 0.8rem;
+			color: var(--text);
+		}
+
+		/* Titoli nei progetti */
+		ul li strong {
+			font-weight: 500;
+		}
+
+		#curriculum article ul li,
+		#curriculum article p {
+			max-width: 600px;
+			/* o un valore tra 500 e 700 px */
+			margin-left: auto;
+			margin-right: auto;
+			line-height: 1.5;
+		}
+
+		.text-container {
+			max-width: 600px;
+			margin: 0 auto;
+			line-height: 1.5;
+		}
+
+		#curriculum article h2,
+		#curriculum article .text-container {
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		#curriculum article .text-container {
+			line-height: 1.5;
+		}
+	</style>
+</head>
+
+<body>
+	<header class="d-flex justify-content-between align-items-center">
+		<nav class="nav">
+			<a class="nav-link text-white" href="#" data-section="home">Home</a>
+			<a class="nav-link text-white" href="#" data-section="coding">Coding</a>
+			<a class="nav-link text-white" href="#" data-section="curriculum">Curriculum</a>
+		</nav>
+	</header>
+
+	<main id="main-content">
+		<!-- Il contenuto viene caricato qui -->
+	</main>
+
+	<footer>
+		<p>Made with 💻 by Chris Federico</p>
+	</footer>
+
+	<script>
+		async function loadSection(page, target) {
+			fetch(`${page}.html`)
+				.then(res => res.text())
+				.then(html => {
+					const main = document.querySelector("main");
+
+					// Rimuovi e forza il reflow per riattivare l'animazione
+					main.classList.remove("fade-in-up");
+					void main.offsetWidth;
+
+					// Inserisci HTML e anima
+					main.innerHTML = html;
+					main.classList.add("fade-in-up");
+
+					// Gestione active sulla navbar
+					document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+					if (target) {
+						target.classList.add('active');
+					} else {
+						const firstLink = document.querySelector(`.nav-link[data-section="${page}"]`);
+						if (firstLink) firstLink.classList.add('active');
+					}
+				});
+		}
+
+
+		document.querySelectorAll(".nav-link").forEach(link => {
+			link.addEventListener("click", e => {
+				e.preventDefault();
+				const section = link.getAttribute("data-section");
+				loadSection(section, link);
+			});
+		});
+
+		window.onload = () => {
+			loadSection("home");
+		};
+	</script>
+</body>
+
 </html>
