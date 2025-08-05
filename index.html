@@ -18,6 +18,7 @@
 			--primary: #ff6b00;
 			--primary-light: #ffa347;
 			--gray-dark: #2c2c2c;
+			--accent: #ff6b00;
 		}
 
 		body {
@@ -95,14 +96,14 @@
 
 		/* Paragrafi normali */
 		p {
-			font-weight: 400;
+			font-weight: 200;
 			line-height: 1.6;
 		}
 
 		/* Footer, note o testo secondario */
 		footer,
 		.small-text {
-			font-weight: 300;
+			font-weight: 200;
 			font-size: 0.9rem;
 			color: #999999;
 		}
@@ -219,85 +220,128 @@
 
 		/* Curriculum Section Styling */
 
+		.curriculum-header {
+			display: flex;
+			align-items: center;
+			gap: 1.5rem;
+			margin-bottom: 2rem;
+			flex-wrap: wrap;
+			/* permette il wrapping */
+		}
+
+		.curriculum-header>div:last-child {
+			max-width: 100%;
+			white-space: normal;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			flex: 1 1 200px;
+			/* cresce e si restringe */
+		}
+
+		.curriculum-header h1,
+		.curriculum-header .small-text {
+			max-width: 100%;
+			white-space: normal;
+			overflow-wrap: break-word;
+			word-wrap: break-word;
+			margin: 0;
+		}
+
+		/* Foto profilo */
+		.profile-photo img {
+			width: 120px;
+			height: 120px;
+			object-fit: cover;
+			border-radius: 50%;
+			border: 3px solid var(--accent);
+		}
+
 		/* Titoli principali */
-		h1 {
+		#curriculum article h2 {
 			font-weight: 700;
-			font-size: 2.2rem;
-			margin-bottom: 1.5rem;
-		}
-
-		h2 {
-			font-weight: 600;
-			font-size: 1.6rem;
+			font-size: 1.8rem;
 			margin-bottom: 0.3rem;
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: left;
 		}
 
-		h5 {
-			font-weight: 600;
-			font-size: 1.1rem;
-			margin-top: 1rem;
-			margin-bottom: 0.5rem;
-		}
-
-		/* Azienda + Location */
-		.lead {
+		#curriculum article p.lead {
 			font-weight: 200;
 			font-size: 1.05rem;
 			color: #bbbbbb;
 			margin-bottom: 0.2rem;
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: left;
 		}
 
-		/* Date */
-		.small-text {
+		#curriculum article p.small-text {
 			font-weight: 200;
 			font-size: 0.95rem;
 			color: #999999;
 			margin-bottom: 1rem;
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
+			text-align: left;
 		}
 
-		/* Elenco progetti */
-		ul {
+		#curriculum article ul {
 			padding-left: 1.2rem;
 			margin-bottom: 2rem;
+			max-width: 600px;
+			margin-left: auto;
+			margin-right: auto;
 		}
 
-		ul li {
+		#curriculum article ul li {
 			font-weight: 200;
 			font-size: 1rem;
-			line-height: 1.6;
+			line-height: 1.5;
 			margin-bottom: 0.8rem;
 			color: var(--text);
 		}
 
-		/* Titoli nei progetti */
-		ul li strong {
+		#curriculum article ul li strong {
 			font-weight: 500;
 		}
 
-		#curriculum article ul li,
-		#curriculum article p {
-			max-width: 600px;
-			/* o un valore tra 500 e 700 px */
-			margin-left: auto;
-			margin-right: auto;
-			line-height: 1.5;
-		}
+		/* Responsive adjustments */
+		@media (max-width: 600px) {
+			main {
+				padding: 1rem;
+			}
 
-		.text-container {
-			max-width: 600px;
-			margin: 0 auto;
-			line-height: 1.5;
-		}
+			.curriculum-header {
+				flex-direction: column;
+				align-items: center;
+				text-align: center;
+			}
 
-		#curriculum article h2,
-		#curriculum article .text-container {
-			max-width: 600px;
-			margin-left: auto;
-			margin-right: auto;
-		}
+			.curriculum-header>div:last-child {
+				flex: none;
+				max-width: 100%;
+			}
 
-		#curriculum article .text-container {
-			line-height: 1.5;
+			.profile-photo img {
+				width: 100px;
+				height: 100px;
+				margin-bottom: 1rem;
+			}
+
+			#curriculum article h2 {
+				font-size: 1.4rem;
+			}
+
+			#curriculum article ul {
+				max-width: 100%;
+				padding-left: 1rem;
+			}
+
+			
 		}
 	</style>
 </head>
