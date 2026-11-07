@@ -1,407 +1,314 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
-
+<html lang="en">
 <head>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
-		rel="stylesheet">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Cristiano Federico – Full-Stack Web Developer</title>
+	<meta name="description" content="Cristiano Federico, Full-Stack Web Developer based in Forlì, Italy, working with PHP/Laravel backends, TypeScript and AWS, and recently building AI-powered chatbots.">
+	<meta name="author" content="Cristiano Federico">
+	<meta name="color-scheme" content="light dark">
+	<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#1a1919" media="(prefers-color-scheme: dark)">
+	<link rel="canonical" href="https://chrisfederico.github.io/">
 
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>Chris Federico</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-	<style>
-		/* Palette arancione */
-		:root {
-			--bg: #1c1c1c;
-			--text: #f0f0f0;
-			--primary: #ff6b00;
-			--primary-light: #ffa347;
-			--gray-dark: #2c2c2c;
-			--accent: #ff6b00;
-		}
+	<!-- Open Graph / social preview -->
+	<meta property="og:type" content="profile">
+	<meta property="og:site_name" content="Cristiano Federico">
+	<meta property="og:locale" content="en_US">
+	<meta property="og:url" content="https://chrisfederico.github.io/">
+	<meta property="og:title" content="Cristiano Federico – Full-Stack Web Developer">
+	<meta property="og:description" content="Full-stack developer focused on PHP/Laravel backends, recently building AI-powered chatbots. Based in Forlì, Italy.">
+	<meta property="og:image" content="https://chrisfederico.github.io/assets/img/cristiano-federico.jpg">
+	<meta property="og:image:width" content="324">
+	<meta property="og:image:height" content="324">
+	<meta property="og:image:alt" content="Portrait of Cristiano Federico">
+	<meta property="profile:first_name" content="Cristiano">
+	<meta property="profile:last_name" content="Federico">
+	<meta name="twitter:card" content="summary">
 
-		body {
-			height: 100%;
-			margin: 0;
-			padding: 0;
-			font-family: 'Poppins', sans-serif;
-			background: linear-gradient(270deg, #1c1c1c, #2c2c2c, #3a3a3a, #2c2c2c, #1c1c1c);
-			background-size: 800% 800%;
-			animation: gradientShift 30s ease infinite;
-			color: var(--text);
-			display: flex;
-			flex-direction: column;
-			transition: background-color 0.5s ease, color 0.5s ease;
-		}
+	<script type="application/ld+json">
+	{
+		"@context": "https://schema.org",
+		"@type": "Person",
+		"name": "Cristiano Federico",
+		"jobTitle": "Full-Stack Web Developer",
+		"url": "https://chrisfederico.github.io/",
+		"image": "https://chrisfederico.github.io/assets/img/cristiano-federico.jpg",
+		"email": "mailto:cristiano.federico.92@gmail.com",
+		"telephone": "+393913311284",
+		"address": { "@type": "PostalAddress", "addressLocality": "Forlì", "addressRegion": "FC", "addressCountry": "IT" },
+		"worksFor": { "@type": "Organization", "name": "Jumpgroup SRL" },
+		"alumniOf": { "@type": "CollegeOrUniversity", "name": "Università degli Studi di Salerno" },
+		"knowsAbout": ["PHP", "Laravel", "TypeScript", "React", "AWS", "Python", "Node.js", "MySQL", "Qdrant", "Docker"],
+		"sameAs": [
+			"https://github.com/ChrisFederico",
+			"https://www.linkedin.com/in/cristiano-federico-821b12139/"
+		]
+	}
+	</script>
 
-		@keyframes gradientShift {
-			0% {
-				background-position: 0% 50%;
+	<!-- "js" enables JS-only UI (mobile menu). A saved theme is applied before first paint (no flash); otherwise CSS follows the OS -->
+	<script>
+		document.documentElement.classList.add('js');
+		try {
+			var savedTheme = localStorage.getItem('theme');
+			if (savedTheme === 'dark' || savedTheme === 'light') {
+				document.documentElement.setAttribute('data-theme', savedTheme);
 			}
-			50% {
-				background-position: 100% 50%;
-			}
-			100% {
-				background-position: 0% 50%;
-			}
+		} catch (e) {}
+	</script>
+
+	<!-- Enable scroll-reveal only when it can work and motion is welcome; otherwise content is simply visible -->
+	<script>
+		if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			document.documentElement.classList.add('js-reveal');
 		}
+	</script>
 
-		header {
-			padding: 1rem 2rem;
-			background-color: var(--gray-dark);
-			border-bottom: 1px solid #444;
-		}
-
-		main {
-			flex: 1;
-			padding: 2rem;
-		}
-
-		footer {
-			text-align: center;
-			padding: 1rem;
-			background-color: var(--gray-dark);
-			border-top: 1px solid #444;
-		}
-
-		/* Headings */
-		h1,
-		h2,
-		h3 {
-			font-weight: 600;
-		}
-
-		/* Titoli importanti */
-		h1 {
-			font-size: 2.5rem;
-		}
-
-		h2 {
-			font-size: 2rem;
-		}
-
-		h3 {
-			font-size: 1.5rem;
-		}
-
-		/* Sottotitoli o descrizioni */
-		.lead,
-		.subtitle,
-		.section-subtitle {
-			font-weight: 300;
-			font-size: 1.125rem;
-			color: #cccccc;
-		}
-
-		/* Paragrafi normali */
-		p {
-			font-weight: 200;
-			line-height: 1.6;
-		}
-
-		/* Footer, note o testo secondario */
-		footer,
-		.small-text {
-			font-weight: 200;
-			font-size: 0.9rem;
-			color: #999999;
-		}
-
-		/* Navbar */
-		.nav-link {
-			transition: color 0.3s ease, transform 0.3s ease;
-			color: var(--text);
-			cursor: pointer;
-		}
-
-		.nav-link:hover {
-			color: var(--primary-light);
-			transform: scale(1.05);
-		}
-
-		.nav-link.active {
-			font-weight: bold;
-			text-decoration: underline;
-			color: var(--primary) !important;
-			position: relative;
-		}
-
-		.nav-link.active::after {
-			content: "";
-			position: absolute;
-			left: 50%;
-			bottom: -5px;
-			width: 6px;
-			height: 6px;
-			background-color: var(--primary);
-			border-radius: 50%;
-			transform: translateX(-50%);
-			animation: pulse 1.5s infinite;
-		}
-
-		@keyframes pulse {
-			0% {
-				transform: translateX(-50%) scale(1);
-				opacity: 1;
-			}
-
-			50% {
-				transform: translateX(-50%) scale(1.5);
-				opacity: 0.5;
-			}
-
-			100% {
-				transform: translateX(-50%) scale(1);
-				opacity: 1;
-			}
-		}
-
-		.profile-pic {
-			max-width: 200px;
-			border-radius: 50%;
-			border: 2px solid var(--primary);
-			transition: transform 0.3s ease;
-		}
-
-		.profile-pic:hover {
-			transform: scale(1.05);
-		}
-
-		/* Social icons */
-		.social-icons a {
-			transition: transform 0.3s ease, color 0.3s ease;
-			color: var(--text);
-		}
-
-		.social-icons a:hover {
-			transform: scale(1.3);
-			color: var(--primary-light);
-		}
-
-		/* Fade-in animation */
-		.fade-in {
-			opacity: 0;
-			animation: fadeIn 0.8s ease forwards;
-		}
-
-		@keyframes fadeIn {
-			to {
-				opacity: 1;
-			}
-		}
-
-		/* Animazione entrata: fade + slide */
-		.fade-in-up {
-			opacity: 0;
-			transform: translateY(20px);
-			animation: fadeInUp 0.8s ease forwards;
-		}
-
-		@keyframes fadeInUp {
-			to {
-				opacity: 1;
-				transform: translateY(0);
-			}
-		}
-
-		/* Ritardi per elementi multipli (es. titoli, paragrafi) */
-		.fade-delay-1 {
-			animation-delay: 0.1s;
-		}
-
-		.fade-delay-2 {
-			animation-delay: 0.2s;
-		}
-
-		.fade-delay-3 {
-			animation-delay: 0.3s;
-		}
-
-		/* Curriculum Section Styling */
-
-		.curriculum-header {
-			display: flex;
-			align-items: center;
-			gap: 1.5rem;
-			margin-bottom: 2rem;
-			flex-wrap: wrap;
-			/* permette il wrapping */
-		}
-
-		.curriculum-header>div:last-child {
-			max-width: 100%;
-			white-space: normal;
-			overflow-wrap: break-word;
-			word-wrap: break-word;
-			flex: 1 1 200px;
-			/* cresce e si restringe */
-		}
-
-		.curriculum-header h1,
-		.curriculum-header .small-text {
-			max-width: 100%;
-			white-space: normal;
-			overflow-wrap: break-word;
-			word-wrap: break-word;
-			margin: 0;
-		}
-
-		/* Foto profilo */
-		.profile-photo img {
-			width: 120px;
-			height: 120px;
-			object-fit: cover;
-			border-radius: 50%;
-			border: 3px solid var(--accent);
-		}
-
-		/* Titoli principali */
-		#curriculum article h2 {
-			font-weight: 700;
-			font-size: 1.8rem;
-			margin-bottom: 0.3rem;
-			max-width: 600px;
-			margin-left: auto;
-			margin-right: auto;
-			text-align: left;
-		}
-
-		#curriculum article p.lead {
-			font-weight: 200;
-			font-size: 1.05rem;
-			color: #bbbbbb;
-			margin-bottom: 0.2rem;
-			max-width: 600px;
-			margin-left: auto;
-			margin-right: auto;
-			text-align: left;
-		}
-
-		#curriculum article p.small-text {
-			font-weight: 200;
-			font-size: 0.95rem;
-			color: #999999;
-			margin-bottom: 1rem;
-			max-width: 600px;
-			margin-left: auto;
-			margin-right: auto;
-			text-align: left;
-		}
-
-		#curriculum article ul {
-			padding-left: 1.2rem;
-			margin-bottom: 2rem;
-			max-width: 600px;
-			margin-left: auto;
-			margin-right: auto;
-		}
-
-		#curriculum article ul li {
-			font-weight: 200;
-			font-size: 1rem;
-			line-height: 1.5;
-			margin-bottom: 0.8rem;
-			color: var(--text);
-		}
-
-		#curriculum article ul li strong {
-			font-weight: 500;
-		}
-
-		/* Responsive adjustments */
-		@media (max-width: 600px) {
-			main {
-				padding: 1rem;
-			}
-
-			.curriculum-header {
-				flex-direction: column;
-				align-items: center;
-				text-align: center;
-			}
-
-			.curriculum-header>div:last-child {
-				flex: none;
-				max-width: 100%;
-			}
-
-			.profile-photo img {
-				width: 100px;
-				height: 100px;
-				margin-bottom: 1rem;
-			}
-
-			#curriculum article h2 {
-				font-size: 1.4rem;
-			}
-
-			#curriculum article ul {
-				max-width: 100%;
-				padding-left: 1rem;
-			}
-
-			
-		}
-	</style>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&amp;family=Roboto:wght@400;500;700&amp;display=swap">
+	<link rel="stylesheet" href="assets/css/style.css">
+	<script src="assets/js/main.js" defer></script>
 </head>
 
-<body>
-	<header class="d-flex justify-content-between align-items-center">
-		<nav class="nav">
-			<a class="nav-link text-white" href="#" data-section="home">Home</a>
-			<a class="nav-link text-white" href="#" data-section="coding">Coding</a>
-			<a class="nav-link text-white" href="#" data-section="curriculum">Curriculum</a>
-		</nav>
+<body id="top">
+	<!-- Icon sprite (decorative; every icon sits next to a text label) -->
+	<svg class="sprite" aria-hidden="true" focusable="false">
+		<symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+		<symbol id="i-phone" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+		<symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+		<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></symbol>
+		<symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+		<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></symbol>
+		<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+		<symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+		<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m0 0-5-5m5 5-5 5"/></symbol>
+		<symbol id="i-github" viewBox="0 0 16 16"><path class="solid" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></symbol>
+		<symbol id="i-linkedin" viewBox="0 0 16 16"><path class="solid" d="M14.82 0H1.18C.53 0 0 .52 0 1.16v13.68C0 15.48.53 16 1.18 16h13.64c.65 0 1.18-.52 1.18-1.16V1.16C16 .52 15.47 0 14.82 0zM4.75 13.63H2.37V6h2.38zM3.56 4.96a1.38 1.38 0 1 1 0-2.76 1.38 1.38 0 0 1 0 2.76zm10.07 8.67h-2.37V9.92c0-.89-.02-2.03-1.24-2.03-1.24 0-1.43.97-1.43 1.97v3.77H6.22V6h2.28v1.04h.03c.32-.6 1.09-1.23 2.25-1.23 2.4 0 2.85 1.58 2.85 3.64z"/></symbol>
+	</svg>
+
+	<a class="skip-link" href="#main">Skip to main content</a>
+
+	<header class="site-nav">
+		<div class="container site-nav__inner">
+			<a class="site-nav__brand" href="#top" aria-label="Cristiano Federico, back to top">
+				<span class="site-nav__mark" aria-hidden="true">CF</span>
+				<span class="site-nav__name">Cristiano Federico</span>
+			</a>
+			<div class="site-nav__end">
+				<nav class="site-nav__nav" aria-label="Sections">
+					<!-- Mobile only, and only with JavaScript; otherwise the links stay inline -->
+					<button class="icon-button site-nav__menu-btn" type="button" aria-expanded="false" aria-controls="site-menu">
+						<span class="visually-hidden">Menu</span>
+						<svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"/></svg>
+						<svg class="icon icon-close" aria-hidden="true"><use href="#i-close"/></svg>
+					</button>
+					<ul class="site-nav__links" id="site-menu">
+						<li><a href="#projects">Projects</a></li>
+						<li><a href="#experience">Experience</a></li>
+						<li><a href="#skills">Skills</a></li>
+						<li><a href="#contact">Contact</a></li>
+					</ul>
+				</nav>
+				<!-- Shown by main.js; without JavaScript the theme simply follows the OS -->
+				<button class="icon-button theme-toggle" type="button" aria-pressed="false" hidden>
+					<span class="visually-hidden">Dark mode</span>
+					<svg class="icon icon-moon" aria-hidden="true"><use href="#i-moon"/></svg>
+					<svg class="icon icon-sun" aria-hidden="true"><use href="#i-sun"/></svg>
+				</button>
+			</div>
+		</div>
 	</header>
 
-	<main id="main-content">
-		<!-- Il contenuto viene caricato qui -->
+	<main id="main" tabindex="-1">
+		<!-- Hero -->
+		<section class="hero" aria-labelledby="hero-title">
+			<div class="container hero__inner">
+				<div class="hero__media hero-in" style="--i: 0">
+					<img class="hero__photo" src="assets/img/cristiano-federico.jpg" width="324" height="324" alt="Portrait of Cristiano Federico">
+				</div>
+
+				<div class="hero__text">
+					<h1 class="hero__title hero-in" id="hero-title" style="--i: 1">Cristiano Federico</h1>
+					<p class="hero__role hero-in" style="--i: 2">Full-Stack Web Developer</p>
+					<p class="hero__lead hero-in" style="--i: 3">Born in Naples, coding in Forlì.<br>Developer by trade, <strong>cybersecurity</strong> and <strong>guitar</strong> enthusiast by choice.</p>
+
+					<div class="hero__actions hero-in" style="--i: 4">
+						<a class="button button--primary" href="#contact">
+							Contact me
+							<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+						</a>
+						<a class="button button--secondary" href="cv.html">
+							<svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
+							Download CV
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Projects -->
+		<section class="section" id="projects" aria-labelledby="projects-title">
+			<div class="container">
+				<header class="section__head reveal">
+					<p class="eyebrow">Selected work</p>
+					<h2 class="section__title" id="projects-title">Featured projects</h2>
+				</header>
+
+				<ul class="project-grid" role="list">
+					<li class="card reveal">
+						<article>
+							<p class="card__meta"><span class="badge badge--ai">AI</span> Jumpgroup · Current</p>
+							<h3 class="card__title">HR assistant chatbot</h3>
+							<p class="card__text">An AI-powered chatbot that streamlines HR processes, retrieving employee data such as salaries, payroll, business travel expenses and leave requests.</p>
+						</article>
+					</li>
+					<li class="card reveal">
+						<article>
+							<p class="card__meta"><span class="badge badge--ai">AI</span> Jumpgroup · Current</p>
+							<h3 class="card__title">Industrial inspection chatbot</h3>
+							<p class="card__text">A chatbot that analyzes industrial inspection videos to automatically generate compliance reports for machinery, aligned with Industry 4.0 standards.</p>
+						</article>
+					</li>
+					<li class="card reveal">
+						<article>
+							<p class="card__meta">Jumpgroup · 2021–2025</p>
+							<h3 class="card__title">Privacy compliance SaaS</h3>
+							<p class="card__text">A SaaS platform that automates the generation of privacy and personal-data-processing documentation.</p>
+						</article>
+					</li>
+					<li class="card reveal">
+						<article>
+							<p class="card__meta">Jumpgroup · 2021–2025</p>
+							<h3 class="card__title">Fuel supplier mobile API</h3>
+							<p class="card__text">A secure, scalable RESTful API powering a fuel supplier’s mobile app, integrated with a complex third-party vendor API for real-time data synchronization.</p>
+						</article>
+					</li>
+				</ul>
+				<p class="section__note reveal">AWS services used across projects: S3, CloudFront and Lambda. Deployments run through GitHub Actions pipelines.</p>
+			</div>
+		</section>
+
+		<!-- Experience -->
+		<section class="section section--tinted" id="experience" aria-labelledby="experience-title">
+			<div class="container">
+				<header class="section__head reveal">
+					<p class="eyebrow">Career</p>
+					<h2 class="section__title" id="experience-title">Experience</h2>
+				</header>
+
+				<ol class="timeline" role="list">
+					<li class="timeline__item reveal">
+						<p class="timeline__date">Current</p>
+						<h3 class="timeline__role">Full Stack Web Developer</h3>
+						<p class="timeline__org">Jumpgroup SRL</p>
+						<p class="timeline__text">Building AI-powered chatbots for HR processes and for compliance reporting from industrial inspection videos.</p>
+					</li>
+					<li class="timeline__item reveal">
+						<p class="timeline__date"><time datetime="2021">2021</time> – <time datetime="2025">2025</time></p>
+						<h3 class="timeline__role">Backend Web Developer</h3>
+						<p class="timeline__org">Jumpgroup SRL</p>
+						<p class="timeline__text">Developed and maintained a privacy-compliance SaaS platform and designed a RESTful API for a fuel supplier’s mobile app.</p>
+					</li>
+					<li class="timeline__item reveal">
+						<p class="timeline__date"><time datetime="2018">2018</time> – <time datetime="2021">2021</time></p>
+						<h3 class="timeline__role">Full Stack Web Developer</h3>
+						<p class="timeline__org">Leadtech SRL</p>
+						<p class="timeline__text">Built an environmental monitoring platform for a mesh network of XBee nodes and a corporate management system for orders, attendance and scheduling.</p>
+					</li>
+				</ol>
+			</div>
+		</section>
+
+		<!-- Skills, education, languages -->
+		<section class="section" id="skills" aria-labelledby="skills-title">
+			<div class="container">
+				<header class="section__head reveal">
+					<p class="eyebrow">Toolbox</p>
+					<h2 class="section__title" id="skills-title">Skills</h2>
+				</header>
+
+				<div class="skill-grid">
+					<div class="skill-group reveal">
+						<h3 class="skill-group__title">Backend</h3>
+						<ul class="tags" role="list">
+							<li>PHP/Laravel</li><li>Python</li><li>NodeJS</li>
+						</ul>
+					</div>
+					<div class="skill-group reveal">
+						<h3 class="skill-group__title">Frontend</h3>
+						<ul class="tags" role="list">
+							<li>JavaScript</li><li>TypeScript</li><li>React</li><li>HTML &amp; CSS</li>
+						</ul>
+					</div>
+					<div class="skill-group reveal">
+						<h3 class="skill-group__title">Database</h3>
+						<ul class="tags" role="list">
+							<li>MySQL</li><li>Qdrant</li>
+						</ul>
+					</div>
+					<div class="skill-group reveal">
+						<h3 class="skill-group__title">Cloud &amp; DevOps</h3>
+						<ul class="tags" role="list">
+							<li>AWS S3</li><li>CloudFront</li><li>Lambda</li><li>Docker</li><li>Git</li><li>GitHub Actions</li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="background-grid">
+					<div class="reveal">
+						<h3 class="subhead">Education</h3>
+						<ul class="edu-list" role="list">
+							<li>
+								<p class="edu-list__title">Computer Science Bachelor Degree</p>
+								<p class="edu-list__meta"><span lang="it">Università degli Studi di Salerno</span> · <time datetime="2012">2012</time>–<time datetime="2018">2018</time></p>
+							</li>
+							<li>
+								<p class="edu-list__title">Apple Developer Certificate</p>
+								<p class="edu-list__meta">Apple Developer Academy · <time datetime="2016">2016</time>–<time datetime="2017">2017</time></p>
+							</li>
+						</ul>
+					</div>
+					<div class="reveal">
+						<h3 class="subhead">Languages</h3>
+						<ul class="tags" role="list">
+							<li>English</li><li>Italian</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Contact -->
+		<section class="section contact" id="contact" aria-labelledby="contact-title">
+			<div class="container contact__inner">
+				<h2 class="section__title reveal" id="contact-title">Contact</h2>
+
+				<a class="contact__email reveal" href="mailto:cristiano.federico.92@gmail.com">cristiano.federico.92@gmail.com</a>
+
+				<ul class="contact-list reveal" role="list">
+					<li><svg class="icon" aria-hidden="true"><use href="#i-phone"/></svg><a href="tel:+393913311284">+39 391 331 1284</a></li>
+					<li><svg class="icon" aria-hidden="true"><use href="#i-pin"/></svg><span>Forlì (FC), Italy</span></li>
+					<li><svg class="icon" aria-hidden="true"><use href="#i-github"/></svg><a href="https://github.com/ChrisFederico">GitHub</a></li>
+					<li><svg class="icon" aria-hidden="true"><use href="#i-linkedin"/></svg><a href="https://www.linkedin.com/in/cristiano-federico-821b12139/">LinkedIn</a></li>
+				</ul>
+
+				<div class="reveal">
+					<a class="button button--secondary" href="cv.html">
+						<svg class="icon" aria-hidden="true"><use href="#i-download"/></svg>
+						Download CV
+					</a>
+				</div>
+			</div>
+		</section>
 	</main>
 
-	<footer>
-		<p>Made with 💻 by Chris Federico</p>
+	<footer class="site-footer">
+		<div class="container site-footer__inner">
+			<p>© 2026 Cristiano Federico</p>
+			<a href="#top">Back to top</a>
+		</div>
 	</footer>
-
-	<script>
-		async function loadSection(page, target) {
-			fetch(`${page}.html`)
-				.then(res => res.text())
-				.then(html => {
-					const main = document.querySelector("main");
-
-					// Rimuovi e forza il reflow per riattivare l'animazione
-					main.classList.remove("fade-in-up");
-					void main.offsetWidth;
-
-					// Inserisci HTML e anima
-					main.innerHTML = html;
-					main.classList.add("fade-in-up");
-
-					// Gestione active sulla navbar
-					document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-					if (target) {
-						target.classList.add('active');
-					} else {
-						const firstLink = document.querySelector(`.nav-link[data-section="${page}"]`);
-						if (firstLink) firstLink.classList.add('active');
-					}
-				});
-		}
-
-
-		document.querySelectorAll(".nav-link").forEach(link => {
-			link.addEventListener("click", e => {
-				e.preventDefault();
-				const section = link.getAttribute("data-section");
-				loadSection(section, link);
-			});
-		});
-
-		window.onload = () => {
-			loadSection("home");
-		};
-	</script>
 </body>
-
 </html>
