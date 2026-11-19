@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal website of Cristiano (Chris) Federico, served by GitHub Pages from the `main` branch at `https://chrisfederico.github.io/`. Static pages in English: the main site (`index.html`, `assets/css/style.css`, `assets/js/main.js`), the CTF write-up pages (`writeups/*.html`, same stylesheet and script) and the web CV (`cv.html`, `assets/css/cv.css`). There is no build step, package manager, linter or test suite. The only external dependency is Google Fonts (Poppins, Roboto).
+Personal website of Cristiano (Chris) Federico, served by GitHub Pages from the `main` branch at `https://chrisfederico.github.io/`. Static pages in English: the main site (`index.html`, `assets/css/style.css`, `assets/js/main.js`), the CTF write-up pages (`writeups/*.html`, same stylesheet and script) and the web CV (`cv.html`, `assets/css/cv.css`). There is no build step, package manager, linter or test suite. The only external dependency is Google Fonts (JetBrains Mono, Roboto; the CV still uses Poppins, Roboto).
 
 ## Running locally
 
@@ -44,4 +44,4 @@ Deploying means pushing to `main`; GitHub Pages publishes the repo root as-is.
 - `--color-rule` and `--color-rule-soft` are decorative only. Don't use them for text, control borders or focus.
 - The accent is only about 2.2:1 against body text (1.4:1 in dark mode), so links inside text must stay underlined.
 - Focus uses a global `:focus-visible` outline in the accent color. There's a skip link to `#main`, which has `tabindex="-1"`. Below 48rem the nav switches to a menu button (`.site-nav__menu-btn`, `aria-expanded`) that opens a drop-down panel. `main.js` closes it on link click, Escape (focus returns to the button), outside click, or resize to desktop. The button only renders when `html.js` is set (inline `<head>` script); without JS the links stay inline. Below 24rem only the "CF" mark is shown. Below 56rem the hero is a single centered column; below 30rem its buttons stack at equal width.
-- Headings: Poppins; body: Roboto. The heading order is h1 (name) → h2 (sections) → h3 (cards, roles, skill groups).
+- Headings and UI labels (nav, buttons, eyebrows, meta): JetBrains Mono via `--font-heading`; body: Roboto. Eyebrows get a decorative `// ` prefix. `cv.css` keeps Poppins to match the original CV. The heading order is h1 (name) → h2 (sections) → h3 (cards, roles, skill groups).

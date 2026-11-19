@@ -31,7 +31,7 @@
 
 	color-scheme: light;
 
-	--font-heading: "Poppins", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+	--font-heading: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
 	--font-body: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 
 	--max-width: 72rem;
@@ -619,9 +619,15 @@ main:focus {
 .eyebrow {
 	margin-bottom: 0.5rem;
 	font: 600 0.8125rem/1.4 var(--font-heading);
-	letter-spacing: 0.2em;
+	letter-spacing: 0.12em;
 	text-transform: uppercase;
 	color: var(--color-accent);
+}
+
+/* Code-comment prefix; the empty alt text keeps screen readers from announcing it */
+.eyebrow::before {
+	content: "// ";
+	content: "// " / "";
 }
 
 .section__title {
