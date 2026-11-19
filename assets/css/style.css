@@ -610,14 +610,16 @@ main:focus {
 	width: 100%;
 }
 
-/* Source photo is 324×324: keep the rendered size at or below ~20rem so it stays sharp */
+/* Source photo is 324×324: larger sizes trade a little sharpness for presence */
 .hero__photo {
-	width: min(16rem, 72vw);
+	width: min(18rem, 76vw);
 	height: auto;
 	aspect-ratio: 1;
 	border-radius: 1.5rem;
 	object-fit: cover;
 	box-shadow: 0 28px 56px -32px var(--shadow-color);
+	/* Slight tilt; the rotation sits on the img because .hero-in animates the wrapper's transform */
+	transform: rotate(3deg);
 }
 
 .hero__title {
@@ -1022,7 +1024,7 @@ main:focus {
 	}
 
 	.hero__photo {
-		width: clamp(17rem, 27vw, 20rem);
+		width: clamp(19rem, 31vw, 24rem);
 	}
 
 	.section {
