@@ -141,4 +141,26 @@
 			if (section) sectionObserver.observe(section);
 		});
 	}
+
+	// 6. Hero glow follows the pointer (mouse only, and only when motion is welcome).
+	//    CSS registers --glow-x/--glow-y with a short transition, so the glow trails smoothly.
+	var hero = document.querySelector('.hero');
+	if (hero && window.matchMedia('(pointer: fine)').matches &&
+		!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		var glowFrame = 0;
+		var glowX = 0;
+		var glowY = 0;
+		hero.addEventListener('pointermove', function (e) {
+			var rect = hero.getBoundingClientRect();
+			glowX = e.clientX - rect.left;
+			glowY = e.clientY - rect.top;
+			if (glowFrame) return;
+			glowFrame = requestAnimationFrame(function () {
+				glowFrame = 0;
+				hero.style.setProperty('--glow-x', glowX + 'px');
+				hero.style.setProperty('--glow-y', glowY + 'px');
+			});
+		});
+	}
+
 })();

@@ -29,6 +29,11 @@
 	--nav-bg-blur: rgb(255 255 255 / 0.8);
 	--shadow-color: rgb(57 55 55 / 0.45);
 
+	/* Background texture: derived from text/accent, so the dark theme needs no extra values */
+	--color-dot: color-mix(in srgb, var(--color-text) 12%, transparent);
+	--color-grid-line: color-mix(in srgb, var(--color-text) 8%, transparent);
+	--color-glow: color-mix(in srgb, var(--color-accent) 20%, transparent);
+
 	color-scheme: light;
 
 	--font-heading: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
@@ -99,7 +104,11 @@ html {
 
 body {
 	margin: 0;
-	background: var(--color-bg);
+	background-color: var(--color-bg);
+	/* Faint dot grid behind the page; solid sections and cards cover it */
+	background-image: radial-gradient(var(--color-dot) 1px, transparent 1.5px);
+	background-size: 24px 24px;
+	background-attachment: fixed;
 	color: var(--color-text);
 	font: 400 1rem/1.65 var(--font-body);
 }
@@ -517,13 +526,65 @@ main:focus {
 
 /* ---------- Hero ---------- */
 
+/* Animatable glow position (main.js moves it with the pointer; the transition makes it trail) */
+@property --glow-x {
+	syntax: "<length-percentage>";
+	inherits: true;
+	initial-value: 72%;
+}
+
+@property --glow-y {
+	syntax: "<length-percentage>";
+	inherits: true;
+	initial-value: 42%;
+}
+
 .hero {
+	--glow-x: 72%;
+	--glow-y: 42%;
+	position: relative;
+	isolation: isolate;
+	overflow: clip;
 	display: flex;
 	align-items: center;
+	background-color: var(--color-bg);
+	transition: --glow-x 500ms var(--ease-out), --glow-y 500ms var(--ease-out);
 	/* Full screen, capped so very tall screens don't get an empty hero */
 	min-height: min(100vh, 60rem);
 	min-height: min(100svh, 60rem);
 	padding-block: calc(var(--nav-height) + 2.5rem) 3.5rem;
+}
+
+/* Grid lines that fade out towards the edges */
+.hero::before,
+.hero::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	pointer-events: none;
+}
+
+.hero::before {
+	background-image:
+		linear-gradient(var(--color-grid-line) 1px, transparent 1px),
+		linear-gradient(90deg, var(--color-grid-line) 1px, transparent 1px);
+	background-size: 48px 48px;
+	background-position: center;
+	-webkit-mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, black 35%, transparent 100%);
+	mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, black 35%, transparent 100%);
+}
+
+/* Accent glow; follows the pointer on devices with a mouse */
+.hero::after {
+	background: radial-gradient(36rem circle at var(--glow-x) var(--glow-y), var(--color-glow), transparent 70%);
+}
+
+@media (max-width: 55.99rem) {
+	.hero {
+		--glow-x: 50%;
+		--glow-y: 30%;
+	}
 }
 
 .hero__inner {
@@ -1177,6 +1238,15 @@ main:focus {
 		padding-block: 1.5rem;
 		background: none;
 		border: 0;
+	}
+
+	body {
+		background-image: none;
+	}
+
+	.hero::before,
+	.hero::after {
+		display: none;
 	}
 
 	.reveal,

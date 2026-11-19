@@ -19,12 +19,13 @@ Deploying means pushing to `main`; GitHub Pages publishes the repo root as-is.
 - Page order: fixed nav → full-screen hero (name, role, tagline, "Contact me" / "Download CV") → `#projects` (cards) → `#experience` (timeline) → `#writeups` (CTF write-up cards) → `#skills` (grouped tags + education + languages) → `#contact` → footer. The nav links target those ids. `main.js` sets `aria-current="location"` on the link of the section in view.
 - `index.html` also holds the SEO metadata (meta description, canonical, Open Graph, Twitter card, JSON-LD `Person`) and an inline SVG icon sprite (`<symbol id="i-…">`, used via `<use href="#i-…">`). Icons are decorative (`aria-hidden`) and always sit next to text. Use `class="solid"` on filled paths: `.icon` defaults to stroke-only.
 - Both "Download CV" buttons link to `cv.html`, which reproduces the layout of the original CV document. Its "Download PDF" button calls `window.print()`, and the `@media print` rules in `cv.css` lay it out as exactly one A4 sheet with `@page { margin: 0 }`. No PDF is committed on purpose: the original CV contains the street address, while the web CV shows only the city. After editing `cv.html`, check that the print preview still fits on one page. `cv.css` is self-contained (it doesn't load `style.css`) and always light-themed, because the page represents paper. Its sizes are in pt/mm so the screen sheet and the PDF match. Mobile styles are scoped to `@media screen` so they never affect printing.
-- The page works without JavaScript. `main.js` only adds the scroll reveal, the nav border on scroll and the active section link.
+- The page works without JavaScript. `main.js` only adds the scroll reveal, the theme toggle, the mobile menu, the nav border on scroll, the active section link and the hero glow that follows the pointer.
 
 ## Motion
 
 - The hero entrance is pure CSS (`.hero-in`, staggered via inline `style="--i: n"`), inside `@media (prefers-reduced-motion: no-preference)`.
 - Scroll reveal: add `class="reveal"` to an element. An inline script in `<head>` adds `js-reveal` to `<html>` only if `IntersectionObserver` exists and reduced motion is off. Without that class, `.reveal` elements are never hidden. `main.js` removes `.reveal` after the fade so cards get their own fast hover transitions back.
+- Background: a faint dot grid on `body` (fixed), and in the hero a fading line grid (`.hero::before`) plus an accent glow (`.hero::after`). On mouse devices with motion allowed, `main.js` moves the glow to the pointer by setting `--glow-x`/`--glow-y`, registered with `@property` so a 500ms transition makes it trail. The texture colors (`--color-dot`, `--color-grid-line`, `--color-glow`) are `color-mix()` of text/accent, so they follow the theme without separate dark values.
 - Keep durations between 200 and 600ms and never add looping animations. A global `prefers-reduced-motion: reduce` block neutralizes all transitions and animations.
 
 ## Content rules
