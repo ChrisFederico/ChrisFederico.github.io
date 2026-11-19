@@ -1,18 +1,18 @@
 /*
  * Cristiano Federico – personal site
- * Greys and fonts from the CV; one accent (petrol).
+ * Greys and fonts from the CV; one accent (terminal green).
  * WCAG 2.1 contrast:
  *   text #393737      11.8:1 on white, 10.9:1 on #f6f6f6
  *   muted #706f6f      5.0:1 on white,  4.6:1 on #f6f6f6
- *   accent #0f766e     5.5:1 on white,  5.1:1 on #f6f6f6, white on accent 5.5:1
- *   accent-strong      7.6:1 on white,  6.7:1 on accent-tint
+ *   accent #0e7a32     5.5:1 on white,  5.1:1 on #f6f6f6, white on accent 5.5:1
+ *   accent-strong      9.4:1 on white,  8.2:1 on accent-tint
  *   rule #b4b4b4       decorative only (2.1:1) – never for text, control borders or focus
- * Accent vs body text is only ~2.2:1, so links inside text stay underlined.
+ * Accent vs body text is only ~2.2:1 (dark: ~1.4:1), so links inside text stay underlined.
  *
  * Dark theme (follows the OS unless the toggle sets html[data-theme]):
- *   text #ececec 14.9:1, muted #a8a7a7 7.3:1, accent #4fb3a8 7.0:1 on #1a1919
- *   (6.2:1 on surface #242323); dark text on accent buttons 7.0:1;
- *   accent-strong #7fd4ca on accent-tint #173a36 7.2:1.
+ *   text #ececec 14.9:1, muted #a8a7a7 7.3:1, accent #39e75f 10.7:1 on #1a1919
+ *   (9.5:1 on surface #242323); dark text on accent buttons 10.7:1;
+ *   accent-strong #8cf5a8 on accent-tint #12331f 10.4:1.
  */
 
 :root {
@@ -22,9 +22,9 @@
 	--color-surface: #f6f6f6;
 	--color-rule: #b4b4b4;
 	--color-rule-soft: #e4e4e4;
-	--color-accent: #0f766e;
-	--color-accent-strong: #0b5e57;
-	--color-accent-tint: #e6f2f1;
+	--color-accent: #0e7a32;
+	--color-accent-strong: #0a5223;
+	--color-accent-tint: #e6f4ea;
 	--nav-bg: rgb(255 255 255 / 0.92);
 	--nav-bg-blur: rgb(255 255 255 / 0.8);
 	--shadow-color: rgb(57 55 55 / 0.45);
@@ -55,9 +55,9 @@
 		--color-surface: #242323;
 		--color-rule: #5c5b5b;
 		--color-rule-soft: #353434;
-		--color-accent: #4fb3a8;
-		--color-accent-strong: #7fd4ca;
-		--color-accent-tint: #173a36;
+		--color-accent: #39e75f;
+		--color-accent-strong: #8cf5a8;
+		--color-accent-tint: #12331f;
 		--nav-bg: rgb(26 25 25 / 0.92);
 		--nav-bg-blur: rgb(26 25 25 / 0.8);
 		--shadow-color: rgb(0 0 0 / 0.6);
@@ -73,9 +73,9 @@
 	--color-surface: #242323;
 	--color-rule: #5c5b5b;
 	--color-rule-soft: #353434;
-	--color-accent: #4fb3a8;
-	--color-accent-strong: #7fd4ca;
-	--color-accent-tint: #173a36;
+	--color-accent: #39e75f;
+	--color-accent-strong: #8cf5a8;
+	--color-accent-tint: #12331f;
 	--nav-bg: rgb(26 25 25 / 0.92);
 	--nav-bg-blur: rgb(26 25 25 / 0.8);
 	--shadow-color: rgb(0 0 0 / 0.6);

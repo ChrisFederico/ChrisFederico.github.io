@@ -2,7 +2,7 @@
  * cv.html – web version of the CV, laid out like the original A4 document.
  * Palette measured from the CV PDF. WCAG 2.1 contrast:
  *   text #393737 11.8:1 on white; muted #706f6f 5.0:1 on white, 4.6:1 on #f6f6f6;
- *   accent #0f766e (toolbar only) 5.5:1 on white; rule #b4b4b4 decorative only.
+ *   accent #0e7a32 (toolbar only) 5.5:1 on white; rule #b4b4b4 decorative only.
  * Sizes are in pt/mm so the screen "sheet" and the printed PDF match.
  * This page is always light: it represents a paper document.
  */
@@ -14,8 +14,8 @@
 	--color-header-bg: #f6f6f6;
 	--color-rule: #b4b4b4;
 	--color-desk: #ececec;
-	--color-accent: #0f766e;
-	--color-accent-strong: #0b5e57;
+	--color-accent: #0e7a32;
+	--color-accent-strong: #0a5223;
 
 	--font-heading: "Poppins", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 	--font-body: "Roboto", system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
