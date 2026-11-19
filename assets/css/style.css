@@ -426,24 +426,9 @@ main:focus {
 		display: none;
 	}
 
-	.site-nav__name {
-		white-space: nowrap;
-	}
-
 	/* Without JavaScript: keep the links inline, scrolling sideways if needed */
-	html:not(.js) .site-nav__name {
-		display: none;
-	}
-
 	html:not(.js) .site-nav__links {
 		overflow-x: auto;
-	}
-}
-
-/* Very narrow phones (320px): the "CF" mark alone is enough */
-@media (max-width: 23.99rem) {
-	.site-nav__name {
-		display: none;
 	}
 }
 
