@@ -163,4 +163,116 @@
 		});
 	}
 
+	// 7. Hero "data rain": sparse, slow columns of hex glyphs on a canvas behind the hero.
+	//    Not started with reduced motion; paused when the hero is off screen or the tab is hidden.
+	var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+	var canvas = document.createElement('canvas');
+	var ctx = canvas.getContext && canvas.getContext('2d');
+	if (hero && ctx && !reduceMotion.matches && 'IntersectionObserver' in window) {
+		var GLYPHS = '0123456789abcdef{}[]<>/$#_*';
+		var CELL = 20;        // px per column and per row
+		var TRAIL = 14;       // glyphs per falling stream
+		var STEP_MS = 90;     // one row every 90ms
+		var ACTIVE = 0.35;    // share of columns with a stream
+		var drops = [];
+		var width = 0;
+		var height = 0;
+		var color = '';
+		var lastStep = 0;
+		var steps = 0;
+		var rafId = 0;
+		var inView = false;
+
+		canvas.className = 'hero__rain';
+		canvas.setAttribute('aria-hidden', 'true');
+		hero.insertBefore(canvas, hero.firstChild);
+
+		var randomGlyph = function () {
+			return GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
+		};
+		var newDrop = function (initial) {
+			var rows = Math.ceil(height / CELL);
+			return {
+				// Initial drops start anywhere (so the hero isn't empty), later ones above the top
+				y: initial ? Math.floor(Math.random() * rows * 1.6) - Math.floor(rows * 0.6) : -Math.floor(Math.random() * 30),
+				active: Math.random() < ACTIVE,
+				trail: []
+			};
+		};
+		var readColor = function () {
+			color = getComputedStyle(root).getPropertyValue('--color-accent').trim();
+		};
+		var resize = function () {
+			var dpr = Math.min(window.devicePixelRatio || 1, 2);
+			width = hero.clientWidth;
+			height = hero.clientHeight;
+			canvas.width = Math.round(width * dpr);
+			canvas.height = Math.round(height * dpr);
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			var count = Math.ceil(width / CELL);
+			drops = [];
+			for (var i = 0; i < count; i++) drops.push(newDrop(true));
+		};
+		var draw = function () {
+			ctx.clearRect(0, 0, width, height);
+			ctx.font = '500 14px "JetBrains Mono", ui-monospace, monospace';
+			ctx.textBaseline = 'top';
+			ctx.fillStyle = color;
+			for (var i = 0; i < drops.length; i++) {
+				var d = drops[i];
+				d.y++;
+				d.trail.push(randomGlyph());
+				if (d.trail.length > TRAIL) d.trail.shift();
+				// Now and then a glyph in the trail flickers to another one
+				if (Math.random() < 0.08) d.trail[Math.floor(Math.random() * d.trail.length)] = randomGlyph();
+
+				if (d.active) {
+					for (var j = 0; j < d.trail.length; j++) {
+						var row = d.y - (d.trail.length - 1 - j);
+						if (row < 0) continue;
+						var t = (j + 1) / d.trail.length;   // 1 at the head
+						ctx.globalAlpha = j === d.trail.length - 1 ? 1 : t * t * 0.7;
+						ctx.fillText(d.trail[j], i * CELL + 4, row * CELL);
+					}
+				}
+				if ((d.y - TRAIL) * CELL > height) drops[i] = newDrop(false);
+			}
+			ctx.globalAlpha = 1;
+		};
+		var loop = function (time) {
+			rafId = requestAnimationFrame(loop);
+			if (time - lastStep < STEP_MS) return;
+			lastStep = time;
+			if (steps++ % 15 === 0) readColor();   // follows theme changes
+			draw();
+		};
+		var start = function () {
+			if (!rafId && inView && !document.hidden && !reduceMotion.matches) rafId = requestAnimationFrame(loop);
+		};
+		var stop = function () {
+			if (rafId) cancelAnimationFrame(rafId);
+			rafId = 0;
+		};
+
+		readColor();
+		resize();
+		if ('ResizeObserver' in window) {
+			new ResizeObserver(function () { resize(); }).observe(hero);
+		} else {
+			window.addEventListener('resize', resize);
+		}
+		new IntersectionObserver(function (entries) {
+			inView = entries[0].isIntersecting;
+			if (inView) start(); else stop();
+		}).observe(hero);
+		document.addEventListener('visibilitychange', function () {
+			if (document.hidden) stop(); else start();
+		});
+		if (reduceMotion.addEventListener) {
+			reduceMotion.addEventListener('change', function (e) {
+				canvas.hidden = e.matches;
+				if (e.matches) stop(); else start();
+			});
+		}
+	}
 })();
