@@ -926,6 +926,10 @@ main:focus {
 	.skill-grid {
 		grid-template-columns: repeat(4, minmax(0, 1fr));
 	}
+
+	.background-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
 }
 
 /* ---------- Motion (only when the user has not asked to reduce it) ---------- */

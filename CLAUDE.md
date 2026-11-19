@@ -31,6 +31,7 @@ Deploying means pushing to `main`; GitHub Pages publishes the repo root as-is.
 
 - The owner's original CV PDF (kept outside the repo) is the source of truth for roles, dates, skills, education and contacts. `cv.html` mirrors its content verbatim, except that the address is reduced to the city and there are small grammar fixes. Don't invent projects, figures or skills.
 - The owner confirmed that all featured projects use Laravel, TypeScript, React, AWS (S3, CloudFront, Lambda) and GitHub Actions; React and GitHub Actions are not in the PDF. Project cards intentionally show no technology tags (owner request).
+- The CTF entries (TryHackMe rooms LLMborghini and White Rabbit, in `cv.html` and in `#skills` on the main page) are not in the PDF. Their source is the owner's own write-ups, kept privately. White Rabbit is reported as 2 of 3 flags.
 - Only the city is published, not the street address.
 - The page intentionally shows no years-of-experience figure (owner request).
 - When the CV changes, update `cv.html`, the main page text, the OG/meta description and the JSON-LD together.

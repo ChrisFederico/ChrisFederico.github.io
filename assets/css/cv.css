@@ -388,9 +388,10 @@ a:hover {
 	.cv-section--contact { order: 1; }
 	.cv-section--profile { order: 2; }
 	.cv-section--experience { order: 3; }
-	.cv-section--skills { order: 4; }
-	.cv-section--education { order: 5; }
-	.cv-section--languages { order: 6; }
+	.cv-section--ctf { order: 4; }
+	.cv-section--skills { order: 5; }
+	.cv-section--education { order: 6; }
+	.cv-section--languages { order: 7; }
 }
 
 /* ---------- Print / Save as PDF: exactly one A4 sheet ---------- */
