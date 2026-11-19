@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal website of Cristiano (Chris) Federico, served by GitHub Pages from the `main` branch at `https://chrisfederico.github.io/`. Static pages in English: the main site (`index.html`, `assets/css/style.css`, `assets/js/main.js`) and the web CV (`cv.html`, `assets/css/cv.css`). There is no build step, package manager, linter or test suite. The only external dependency is Google Fonts (Poppins, Roboto).
+Personal website of Cristiano (Chris) Federico, served by GitHub Pages from the `main` branch at `https://chrisfederico.github.io/`. Static pages in English: the main site (`index.html`, `assets/css/style.css`, `assets/js/main.js`), the CTF write-up pages (`writeups/*.html`, same stylesheet and script) and the web CV (`cv.html`, `assets/css/cv.css`). There is no build step, package manager, linter or test suite. The only external dependency is Google Fonts (Poppins, Roboto).
 
 ## Running locally
 
@@ -16,7 +16,7 @@ Deploying means pushing to `main`; GitHub Pages publishes the repo root as-is.
 
 ## Structure
 
-- Page order: fixed nav → full-screen hero (name, role, tagline, "Contact me" / "Download CV") → `#projects` (cards) → `#experience` (timeline) → `#skills` (grouped tags + education + languages) → `#contact` → footer. The nav links target those ids. `main.js` sets `aria-current="location"` on the link of the section in view.
+- Page order: fixed nav → full-screen hero (name, role, tagline, "Contact me" / "Download CV") → `#projects` (cards) → `#experience` (timeline) → `#writeups` (CTF write-up cards) → `#skills` (grouped tags + education + languages) → `#contact` → footer. The nav links target those ids. `main.js` sets `aria-current="location"` on the link of the section in view.
 - `index.html` also holds the SEO metadata (meta description, canonical, Open Graph, Twitter card, JSON-LD `Person`) and an inline SVG icon sprite (`<symbol id="i-…">`, used via `<use href="#i-…">`). Icons are decorative (`aria-hidden`) and always sit next to text. Use `class="solid"` on filled paths: `.icon` defaults to stroke-only.
 - Both "Download CV" buttons link to `cv.html`, which reproduces the layout of the original CV document. Its "Download PDF" button calls `window.print()`, and the `@media print` rules in `cv.css` lay it out as exactly one A4 sheet with `@page { margin: 0 }`. No PDF is committed on purpose: the original CV contains the street address, while the web CV shows only the city. After editing `cv.html`, check that the print preview still fits on one page. `cv.css` is self-contained (it doesn't load `style.css`) and always light-themed, because the page represents paper. Its sizes are in pt/mm so the screen sheet and the PDF match. Mobile styles are scoped to `@media screen` so they never affect printing.
 - The page works without JavaScript. `main.js` only adds the scroll reveal, the nav border on scroll and the active section link.
@@ -31,7 +31,8 @@ Deploying means pushing to `main`; GitHub Pages publishes the repo root as-is.
 
 - The owner's original CV PDF (kept outside the repo) is the source of truth for roles, dates, skills, education and contacts. `cv.html` mirrors its content verbatim, except that the address is reduced to the city and there are small grammar fixes. Don't invent projects, figures or skills.
 - The owner confirmed that all featured projects use Laravel, TypeScript, React, AWS (S3, CloudFront, Lambda) and GitHub Actions; React and GitHub Actions are not in the PDF. Project cards intentionally show no technology tags (owner request).
-- The CTF entries (TryHackMe rooms LLMborghini and White Rabbit, in `cv.html` and in `#skills` on the main page) are not in the PDF. Their source is the owner's own write-ups, kept privately. White Rabbit is reported as 2 of 3 flags.
+- The CTF entries (TryHackMe rooms LLMborghini and White Rabbit: in `cv.html`, in `#skills`, and as cards in `#writeups` linking to `writeups/<room>.html`) are not in the PDF. Their source is the owner's own write-ups (a private Claude doc); the pages reproduce that text, with flags and answers kept partially masked. White Rabbit is reported as 2 of 3 flags.
+- Write-up pages reuse `style.css`: the `.site-nav` header with a single `.site-nav__back` link (no section links or menu button), an `.writeup` article with `.prose` content (h1 title → h2 sections → h3), and a `.writeup__foot` linking back and to the other write-up. To add one, copy an existing page, add its card in `#writeups`, and update the "Next" links.
 - Only the city is published, not the street address.
 - The page intentionally shows no years-of-experience figure (owner request).
 - When the CV changes, update `cv.html`, the main page text, the OG/meta description and the JSON-LD together.
